@@ -53,7 +53,7 @@ const Login: React.FC = () => {
             Forget Password?
           </Link>
         </Box>
-        <Button fullWidth variant="contained" color="primary" sx={{ mt: 4 }}>
+        <Button fullWidth variant="contained" sx={{ mt: 4, bgcolor: "black", color: "white", '&:hover': { bgcolor: "#333" } }}>
           Login
         </Button>
         <Box mt={3} textAlign="center">

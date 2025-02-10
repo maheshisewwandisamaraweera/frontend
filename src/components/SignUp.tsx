@@ -64,7 +64,12 @@ const Signup: React.FC = () => {
         {roleFields[role].map((field) => (
           <TextField key={field.name} fullWidth margin="normal" label={field.label} name={field.name} type={field.type || "text"} value={formValues[field.name] || ""} onChange={handleChange} />
         ))}
-        <Button fullWidth variant="contained" color="primary" sx={{ mt: 3 }} onClick={handleSubmit}>
+        <Button
+          fullWidth
+          variant="contained"
+          sx={{ mt: 3, bgcolor: "#000", color: "white", "&:hover": { bgcolor: "#333" } }}
+          onClick={handleSubmit}
+        >
           Sign Up
         </Button>
         <Box mt={3} textAlign="center">
