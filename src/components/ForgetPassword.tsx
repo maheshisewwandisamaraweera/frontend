@@ -1,24 +1,35 @@
 import React, { useState } from "react";
-import { Box, TextField, Button, Typography,  } from "@mui/material";
+import { Box, TextField, Button, Typography } from "@mui/material";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const ForgotPassword: React.FC = () => {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
+  const navigate = useNavigate(); // React Router Hook to navigate to the next page
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     const otp = Math.floor(100000 + Math.random() * 900000).toString(); // Generate 6-digit OTP
     try {
+      // Simulate sending OTP to backend (replace this with actual API call)
       await axios.post("https://your-backend.com/api/send-otp", {
         email,
         otp,
       });
+
       setMessage(`OTP sent to ${email}`);
+      console.log("✅ OTP Sent Successfully! Redirecting...");
     } catch (error) {
-      setMessage("Failed to send OTP. Try again.");
+      setMessage("⚠️ Failed to send OTP. Try again.");
+      console.error("❌ Error sending OTP:", error);
     }
+
+    // Redirect to the Enter OTP page after 2 seconds delay, even if sending OTP fails
+    setTimeout(() => {
+      navigate("/enter-otp", { state: { email } });
+    }, 2000);
   };
 
   return (
@@ -63,13 +74,24 @@ const ForgotPassword: React.FC = () => {
             type="submit"
             variant="contained"
             fullWidth
-            sx={{ mt: 3, py: 1.5, fontSize: "1.1rem", bgcolor: "black", color: "white", '&:hover': { bgcolor: "#333" } }}
+            sx={{
+              mt: 3,
+              py: 1.5,
+              fontSize: "1.1rem",
+              bgcolor: "black",
+              color: "white",
+              "&:hover": { bgcolor: "#333" },
+            }}
           >
             Submit
           </Button>
         </form>
 
-        {message && <Typography color="green" mt={3} fontSize="1.2rem">{message}</Typography>}
+        {message && (
+          <Typography color="green" mt={3} fontSize="1.2rem">
+            {message}
+          </Typography>
+        )}
       </Box>
     </Box>
   );
