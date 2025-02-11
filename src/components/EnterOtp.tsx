@@ -1,12 +1,13 @@
 import React, { useState, useRef } from "react";
-import { Box, TextField, Button, Typography,  } from "@mui/material";
-import { useLocation } from "react-router-dom"; // Import useLocation
+import { Box, TextField, Button, Typography } from "@mui/material";
+import { useLocation, useNavigate } from "react-router-dom"; // Import useNavigate
 
 const EnterOTP: React.FC = () => {
   const { state } = useLocation();
   const email = state?.email || ""; // Retrieve email passed from ForgotPassword.tsx
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const inputRefs = useRef<(HTMLInputElement | null)[]>(Array(6).fill(null));
+  const navigate = useNavigate(); // Hook for navigation
 
   const handleChange = (index: number, value: string) => {
     if (!/^\d?$/.test(value)) return;
@@ -21,6 +22,8 @@ const EnterOTP: React.FC = () => {
   const handleSubmit = () => {
     const enteredOtp = otp.join("");
     console.log(`OTP entered for ${email}:`, enteredOtp);
+    // Redirect to ResetPassword page after successful OTP submission
+    navigate("/reset-password"); // Add your route path for reset password here
   };
 
   return (
