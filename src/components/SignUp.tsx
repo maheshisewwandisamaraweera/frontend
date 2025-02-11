@@ -144,7 +144,7 @@ const Signup: React.FC = () => {
           <Typography variant="body1" component="span">
             Already have an account?{" "}
           </Typography>
-          <Link component={RouterLink} to="/" sx={{ fontWeight: "bold", fontSize: "1rem", textDecoration: "underline" }}>
+          <Link component={RouterLink} to="/login" sx={{ fontWeight: "bold", fontSize: "1rem", textDecoration: "underline" }}>
             Login
           </Link>
         </Box>

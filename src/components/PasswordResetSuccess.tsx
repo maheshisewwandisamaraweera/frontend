@@ -7,7 +7,7 @@ const PasswordResetSuccess: React.FC = () => {
   const navigate = useNavigate(); // Hook for navigation
 
   const handleLoginRedirect = () => {
-    navigate("/"); // Redirect to the login page
+    navigate("/login"); // Redirect to the login page
   };
 
   return (
