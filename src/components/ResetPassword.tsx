@@ -1,20 +1,23 @@
 import React, { useState } from "react";
 import { Box, TextField, Button, Typography, IconButton, InputAdornment } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material"; // Import eye icons
+import { useNavigate } from "react-router-dom"; // Import useNavigate for redirection
 
 const ResetPassword: React.FC = () => {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
   const [showConfirmPassword, setShowConfirmPassword] = useState(false); // State for confirm password visibility
+  const navigate = useNavigate(); // Hook for navigation
 
   const handleClickShowPassword = () => setShowPassword((prev) => !prev); // Toggle password visibility
   const handleClickShowConfirmPassword = () => setShowConfirmPassword((prev) => !prev); // Toggle confirm password visibility
 
-  const handleSubmit = () => {
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault(); // Prevent default form submission
     if (newPassword === confirmPassword) {
       console.log("Password reset successful!");
-      // Handle reset password logic here
+      navigate("/password-reset-success"); // Redirect to the success page
     } else {
       console.log("Passwords do not match.");
     }

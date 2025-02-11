@@ -6,6 +6,7 @@ import Signup from "./components/SignUp";
 import ForgotPassword from "./components/ForgetPassword";
 import EnterOTP from "./components/EnterOtp";
 import ResetPassword from "./components/ResetPassword";
+import PasswordResetSuccess from "./components/PasswordResetSuccess";
 
 const App: React.FC = () => {
   return (
@@ -17,6 +18,7 @@ const App: React.FC = () => {
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/enter-otp" element={<EnterOTP />} />
         <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/password-reset-success" element={<PasswordResetSuccess />} />
       </Routes>
     </Router>
   );
