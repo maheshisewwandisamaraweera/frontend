@@ -16,10 +16,26 @@ const HomePage: React.FC = () => {
       <Box sx={{ backgroundColor: '#f4f4f4', padding: '10px 0' }}>
         <Container maxWidth="lg">
           <Grid container justifyContent="space-between" alignItems="center">
-            <Typography variant="h6">Appointment Booking</Typography>
-            <Button variant="contained" color="primary" onClick={handleLoginClick}>
-              Login
-            </Button>
+            {/* Logo on the Left Side */}
+            <Grid item>
+              <img 
+                src="https://via.placeholder.com/120x50?text=Logo"  // Replace with your actual logo
+                alt="App Logo" 
+                style={{ height: '50px', width: '120px' }} 
+              />
+            </Grid>
+
+            {/* Title in the Center */}
+            <Grid item>
+              <Typography variant="h6">Reservation & Appointment Booking</Typography>
+            </Grid>
+
+            {/* Login Button on the Right */}
+            <Grid item>
+              <Button variant="contained" color="primary" onClick={handleLoginClick}>
+                Login
+              </Button>
+            </Grid>
           </Grid>
         </Container>
       </Box>
@@ -42,62 +58,55 @@ const HomePage: React.FC = () => {
       {/* Features Section */}
       <Container maxWidth="lg" sx={{ py: 5 }}>
         <Grid container spacing={4} justifyContent="center">
-          <Grid item xs={12} sm={4}>
-            <Card>
-              <CardMedia
-                component="img"
-                height="140"
-                image="https://via.placeholder.com/150"
-                alt="Feature 1"
-              />
-              <CardContent>
-                <Typography variant="h6" gutterBottom>
-                  Easy Appointment Booking
-                </Typography>
-                <Typography>
-                  Book in seconds with just a few clicks.
-                </Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-          <Grid item xs={12} sm={4}>
-            <Card>
-              <CardMedia
-                component="img"
-                height="140"
-                image="https://via.placeholder.com/150"
-                alt="Feature 2"
-              />
-              <CardContent>
-                <Typography variant="h6" gutterBottom>
-                  Service Provider Profiles
-                </Typography>
-                <Typography>
-                  Browse service providers and view their availability.
-                </Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-          <Grid item xs={12} sm={4}>
-            <Card>
-              <CardMedia
-                component="img"
-                height="140"
-                image="https://via.placeholder.com/150"
-                alt="Feature 3"
-              />
-              <CardContent>
-                <Typography variant="h6" gutterBottom>
-                  Multi-Channel Booking
-                </Typography>
-                <Typography>
-                  Book via mobile, desktop, or email.
-                </Typography>
-              </CardContent>
-            </Card>
-          </Grid>
+          {[
+            { title: 'Easy Appointment Booking', text: 'Book in seconds with just a few clicks.' },
+            { title: 'Service Provider Profiles', text: 'Browse service providers and view their availability.' },
+            { title: 'Multi-Channel Booking', text: 'Book via mobile, desktop, or email.' },
+          ].map((feature, index) => (
+            <Grid item xs={12} sm={4} key={index}>
+              <Card>
+                <CardMedia
+                  component="img"
+                  height="140"
+                  image="https://via.placeholder.com/150"
+                  alt={feature.title}
+                />
+                <CardContent>
+                  <Typography variant="h6" gutterBottom>
+                    {feature.title}
+                  </Typography>
+                  <Typography>{feature.text}</Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}
         </Grid>
       </Container>
+
+      {/* About Section */}
+      <Box sx={{ backgroundColor: '#f8f9fa', py: 5 }}>
+        <Container maxWidth="lg">
+          <Typography variant="h4" gutterBottom align="center">
+            About Our Reservation & Appointment App
+          </Typography>
+          <Grid container spacing={4} alignItems="center">
+            <Grid item xs={12} md={6}>
+              <img 
+                src="https://via.placeholder.com/500x300"  // Replace with actual image
+                alt="About App" 
+                style={{ width: '100%', borderRadius: '10px' }} 
+              />
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Typography variant="body1">
+                Our Appointment Booking App is designed to provide a seamless and convenient way for users to book appointments with their favorite service providers. Whether it's a salon, spa, medical clinic, or any other service, our platform ensures hassle-free booking and management. 
+                <br /><br />
+                Key features include real-time availability, instant confirmations, reminders, and a user-friendly interface. Experience the future of online appointment scheduling with our reliable and efficient system!
+              </Typography>
+            </Grid>
+          </Grid>
+        </Container>
+      </Box>
 
       {/* How It Works Section */}
       <Box sx={{ backgroundColor: '#fafafa', py: 5 }}>
@@ -106,24 +115,16 @@ const HomePage: React.FC = () => {
             How It Works
           </Typography>
           <Grid container spacing={4} justifyContent="center">
-            <Grid item xs={12} sm={3}>
-              <Typography variant="h6" align="center">
-                Step 1
-              </Typography>
-              <Typography align="center">Choose a service</Typography>
-            </Grid>
-            <Grid item xs={12} sm={3}>
-              <Typography variant="h6" align="center">
-                Step 2
-              </Typography>
-              <Typography align="center">Select a date & time</Typography>
-            </Grid>
-            <Grid item xs={12} sm={3}>
-              <Typography variant="h6" align="center">
-                Step 3
-              </Typography>
-              <Typography align="center">Confirm appointment</Typography>
-            </Grid>
+            {[
+              { step: 'Step 1', text: 'Choose a service' },
+              { step: 'Step 2', text: 'Select a date & time' },
+              { step: 'Step 3', text: 'Confirm appointment' },
+            ].map((item, index) => (
+              <Grid item xs={12} sm={3} key={index}>
+                <Typography variant="h6" align="center">{item.step}</Typography>
+                <Typography align="center">{item.text}</Typography>
+              </Grid>
+            ))}
           </Grid>
         </Container>
       </Box>
@@ -140,8 +141,24 @@ const HomePage: React.FC = () => {
 
       {/* Footer Section */}
       <Box sx={{ backgroundColor: '#333', color: 'white', py: 3 }}>
-        <Container maxWidth="lg" sx={{ textAlign: 'center' }}>
-          <Typography variant="body2">© 2025 Appointment Booking. All Rights Reserved.</Typography>
+        <Container maxWidth="lg">
+          <Grid container spacing={3} justifyContent="center">
+            {/* Contact Info */}
+            <Grid item xs={12} md={6}>
+              <Typography variant="h6">Contact Us</Typography>
+              <Typography variant="body2">
+                169/2 John Rodrigo Mawatha, Katubedda, Moratuwa, Sri Lanka
+              </Typography>
+              <Typography variant="body2">📞 077 563 4567 | ☎️ 011 67 3287906</Typography>
+            </Grid>
+
+            {/* Copyright */}
+            <Grid item xs={12} md={6} sx={{ textAlign: 'center' }}>
+              <Typography variant="body2">
+                © 2025 Appointment Booking. All Rights Reserved.
+              </Typography>
+            </Grid>
+          </Grid>
         </Container>
       </Box>
     </Box>
