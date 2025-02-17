@@ -1,6 +1,10 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, Container, Typography, Grid, Box, Card, CardContent, CardMedia } from '@mui/material';
+import logo from '../images/logo.jpeg'
+import spa from '../images/spa.png';
+import skincare from '../images/skincare.jpg';
+import salon from '../images/salon.jpg';
 
 const HomePage: React.FC = () => {
   const navigate = useNavigate();
@@ -19,9 +23,9 @@ const HomePage: React.FC = () => {
             {/* Logo on the Left Side */}
             <Grid item>
               <img 
-                src="https://via.placeholder.com/120x50?text=Logo"  // Replace with your actual logo
+                src={logo} // Replace with your actual logo
                 alt="App Logo" 
-                style={{ height: '50px', width: '120px' }} 
+                style={{ height: '80px', width: '100px' }} 
               />
             </Grid>
 
@@ -41,7 +45,7 @@ const HomePage: React.FC = () => {
       </Box>
 
       {/* Hero Section */}
-      <Box sx={{ background: 'url(https://via.placeholder.com/1500x600)', backgroundSize: 'cover', padding: '100px 0', color: 'white' }}>
+      <Box sx={{ background:{salon}, backgroundSize: 'cover',backgroundPosition: 'center', padding: '100px 0' }}>
         <Container maxWidth="lg">
           <Typography variant="h3" gutterBottom>
             Easily Book Your Appointment Anytime, Anywhere!
@@ -68,7 +72,7 @@ const HomePage: React.FC = () => {
                 <CardMedia
                   component="img"
                   height="140"
-                  image="https://via.placeholder.com/150"
+                  image={spa}
                   alt={feature.title}
                 />
                 <CardContent>
@@ -92,7 +96,7 @@ const HomePage: React.FC = () => {
           <Grid container spacing={4} alignItems="center">
             <Grid item xs={12} md={6}>
               <img 
-                src="https://via.placeholder.com/500x300"  // Replace with actual image
+                src={skincare} // Replace with actual image
                 alt="About App" 
                 style={{ width: '100%', borderRadius: '10px' }} 
               />
