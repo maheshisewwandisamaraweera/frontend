@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Card, CardContent, CardHeader, Typography, TextField, MenuItem, Select, FormControl, InputLabel, Grid, Box, Paper } from "@mui/material";
+import { Card, CardContent, CardHeader, Typography, TextField, MenuItem, Select, FormControl, InputLabel, Grid, Box, Paper, Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 interface Service {
   id: number;
@@ -20,6 +21,7 @@ const servicesData: Service[] = [
 export default function ServicesPage() {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
+  const navigate = useNavigate();
 
   const filteredServices = servicesData.filter(service =>
     (selectedCategory === "All" || service.category === selectedCategory) &&
@@ -78,6 +80,21 @@ export default function ServicesPage() {
                     <Typography variant="h6" color="primary">
                       {service.price}
                     </Typography>
+                    <Button
+                      variant="contained"
+                      sx={{
+                        mt: 2,
+                        borderRadius: "8px",
+                        backgroundColor: "black", // Set background color to black
+                        color: "white",            // Set text color to white
+                        "&:hover": {
+                          backgroundColor: "#333", // Darker shade on hover
+                        },
+                      }}
+                      onClick={() => navigate(`/schedule/${service.name}`)}
+                    >
+                      Schedule Appointment
+                    </Button>
                   </CardContent>
                 </Card>
               </Grid>

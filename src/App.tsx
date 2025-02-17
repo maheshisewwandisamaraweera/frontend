@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { CssBaseline, Container } from "@mui/material";
 //import Navbar from "./components/Navbar";
 import ServicesPage from "./components/ServicesPage";
-//import SchedulePage from "./components/SchedulePage";
+import SchedulePage from "./components/SchedulePage";
 //import AppointmentsPage from "./components/AppointmentsPage";
 //import NotificationsPage from "./components/NotificationsPage";
 //import ReviewsPage from "./components/ReviewsPage";
@@ -18,6 +18,7 @@ const App: React.FC = () => {
       <Container>
         <Routes>
           <Route path="/" element={<ServicesPage />} />
+          <Route path="/schedule/:serviceName" element={<SchedulePage />} />
           
         </Routes>
       </Container>
@@ -26,5 +27,7 @@ const App: React.FC = () => {
 };
 
 export default App;
+
+
 
 
