@@ -4,6 +4,9 @@ import { CssBaseline, Container } from "@mui/material";
 import Login from "./components/Login";
 import Signup from "./components/SignUp";
 import ServiceProviderAdminProfile from "./components/ServiceProviderAdminProfilePage";
+import ServiceList from "./components/ServiceList";
+import ServiceStaffList from './components/ServiceStaffList';
+
 
 const App: React.FC = () => {
   return (
@@ -13,7 +16,9 @@ const App: React.FC = () => {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
-          <Route path="/" element={<ServiceProviderAdminProfile />} />
+          <Route path="/serviceprovideradminprofile" element={<ServiceProviderAdminProfile />} />
+          <Route path="/servicelist" element={<ServiceList />} />
+          <Route path="/" element={<ServiceStaffList />} />
         </Routes>
       </Container>
     </Router>
@@ -21,3 +26,5 @@ const App: React.FC = () => {
 };
 
 export default App;
+
+
