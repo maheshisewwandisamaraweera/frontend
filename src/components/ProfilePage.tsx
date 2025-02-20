@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function ProfilePage() {
   const navigate = useNavigate();
-  
+
   // Example state for user profile (could come from a backend API in a real application)
   const [profileData, setProfileData] = useState({
     name: "John Doe",
@@ -42,9 +42,9 @@ export default function ProfilePage() {
     alert("Profile saved successfully!");
   };
 
-  // Navigate to services page
-  const handleNavigateToServices = () => {
-    navigate("/");  // Redirect to the service page
+  // Navigate to appointments page
+  const handleNavigateToAppointments = () => {
+    navigate("/appointments");  // Redirect to the appointments page
   };
 
   return (
@@ -119,14 +119,14 @@ export default function ProfilePage() {
           </Button>
         </Box>
 
-        {/* Navigate to services page */}
+        {/* Navigate to appointments page */}
         <Box sx={{ textAlign: "center", mt: 3 }}>
           <Button
             variant="outlined"
             sx={{ width: "100%", borderRadius: 2 }}
-            onClick={handleNavigateToServices}
+            onClick={handleNavigateToAppointments}
           >
-            Back
+            View Appointments
           </Button>
         </Box>
       </Paper>

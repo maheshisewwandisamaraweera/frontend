@@ -4,7 +4,7 @@ import { CssBaseline, Container } from "@mui/material";
 //import Navbar from "./components/Navbar";
 import ServicesPage from "./components/ServicesPage";
 import SchedulePage from "./components/SchedulePage";
-//import AppointmentsPage from "./components/AppointmentsPage";
+import AppointmentsPage from "./components/AppointmentsPage";
 //import NotificationsPage from "./components/NotificationsPage";
 import ReviewsPage from "./components/ReviewsPage";
 //import PaymentPage from "./components/PaymentPage";
@@ -21,6 +21,7 @@ const App: React.FC = () => {
           <Route path="/schedule/:serviceName" element={<SchedulePage />} />
           <Route path="/reviews/:serviceName" element={<ReviewsPage />} />
           <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/appointments" element={<AppointmentsPage />} />
           
         </Routes>
       </Container>
