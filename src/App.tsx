@@ -8,7 +8,7 @@ import SchedulePage from "./components/SchedulePage";
 //import NotificationsPage from "./components/NotificationsPage";
 import ReviewsPage from "./components/ReviewsPage";
 //import PaymentPage from "./components/PaymentPage";
-//import ProfilePage from "./components/ProfilePage";
+import ProfilePage from "./components/ProfilePage";
 
 const App: React.FC = () => {
   return (
@@ -20,6 +20,7 @@ const App: React.FC = () => {
           <Route path="/" element={<ServicesPage />} />
           <Route path="/schedule/:serviceName" element={<SchedulePage />} />
           <Route path="/reviews/:serviceName" element={<ReviewsPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
           
         </Routes>
       </Container>
