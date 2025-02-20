@@ -1,5 +1,9 @@
 import { useState } from "react";
-import { Card, CardContent, CardHeader, Typography, TextField, MenuItem, Select, FormControl, InputLabel, Grid, Box, Paper, Button } from "@mui/material";
+import { 
+  Card, CardContent, CardHeader, Typography, TextField, 
+  MenuItem, Select, FormControl, InputLabel, Grid, 
+  Box, Paper, Button 
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 interface Service {
@@ -80,21 +84,34 @@ export default function ServicesPage() {
                     <Typography variant="h6" color="primary">
                       {service.price}
                     </Typography>
-                    <Button
-                      variant="contained"
-                      sx={{
-                        mt: 2,
-                        borderRadius: "8px",
-                        backgroundColor: "black", // Set background color to black
-                        color: "white",            // Set text color to white
-                        "&:hover": {
-                          backgroundColor: "#333", // Darker shade on hover
-                        },
-                      }}
-                      onClick={() => navigate(`/schedule/${service.name}`)}
-                    >
-                      Schedule Appointment
-                    </Button>
+
+                    {/* Buttons in the same row */}
+                    <Box sx={{ display: "flex", justifyContent: "space-between", mt: 2 }}>
+                      <Button
+                        variant="contained"
+                        sx={{
+                          flex: 1, 
+                          borderRadius: "8px",
+                          backgroundColor: "black",
+                          color: "white",
+                          "&:hover": { backgroundColor: "#333" },
+                          mr: 1  // Space between buttons
+                        }}
+                        onClick={() => navigate(`/schedule/${service.name}`)}
+                      >
+                        Schedule Appointment
+                      </Button>
+                      <Button
+                        variant="outlined"
+                        sx={{
+                          flex: 1,
+                          borderRadius: "8px",
+                        }}
+                        onClick={() => navigate(`/reviews/${service.name}`)}
+                      >
+                        View Reviews
+                      </Button>
+                    </Box>
                   </CardContent>
                 </Card>
               </Grid>
