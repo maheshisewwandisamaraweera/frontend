@@ -33,7 +33,15 @@ export default function SchedulePage() {
       alert("⚠️ Please select all fields before scheduling.");
       return;
     }
-    setOpenSnackbar(true);
+
+    // Navigate to the PaymentPage and pass service details, selected date, and time as state
+    navigate("/payment", {
+      state: {
+        serviceName,
+        selectedDate,
+        selectedTime,
+      },
+    });
   };
 
   // Handle Profile Button click
@@ -81,7 +89,9 @@ export default function SchedulePage() {
           />
         </LocalizationProvider>
 
-        <Button variant="contained" fullWidth onClick={handleSubmit}>Confirm Appointment</Button>
+        <Button variant="contained" fullWidth onClick={handleSubmit}>
+          Confirm Appointment
+        </Button>
       </Paper>
     </Box>
   );

@@ -22,6 +22,7 @@ const App: React.FC = () => {
           <Route path="/reviews/:serviceName" element={<ReviewsPage />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/appointments" element={<AppointmentsPage />} />
+        
           
         </Routes>
       </Container>
