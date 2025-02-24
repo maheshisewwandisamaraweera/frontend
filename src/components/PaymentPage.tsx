@@ -1,57 +1,59 @@
-import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { Typography, Button, Box, Paper, CircularProgress } from "@mui/material";
+import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
-import { Elements } from "@stripe/react-stripe-js";
-import { Button, Typography, Box, Paper } from "@mui/material";
-import CheckoutForm from "./CheckoutForm";
 
-// Initialize Stripe with your public key
-const stripePromise = loadStripe("pk_test_51QudmXCF6DmhXmG4h4qHIHEXCchOtXBPo0Im2kwWeds6ZA09ENqhxZbiSCllT5mXRXT1CwcTx2VOhKgiYWFL7AHj001FK40PnU");
+// Load Stripe public key
+const stripePromise = loadStripe("your-publishable-key-here");
 
 export default function PaymentPage() {
   const location = useLocation();
   const navigate = useNavigate();
+  const stripe = useStripe();
+  const elements = useElements();
+  const [loading, setLoading] = useState(false);
 
-  // Retrieve booking details from the location state
   const { serviceName, selectedDate, selectedTime } = location.state || {};
 
-  // If no booking details are provided, redirect to the home page
-  useEffect(() => {
-    if (!serviceName || !selectedDate || !selectedTime) {
-      navigate("/"); // Redirect to home if accessed without booking details
+  const handlePayment = async () => {
+    if (!stripe || !elements) return;
+
+    setLoading(true);
+    
+    const { error, paymentIntent } = await stripe.confirmCardPayment("your-client-secret-from-server", {
+      payment_method: {
+        card: elements.getElement(CardElement)!,
+      },
+    });
+
+    setLoading(false);
+
+    if (error) {
+      alert(`Payment failed: ${error.message}`);
+    } else if (paymentIntent?.status === "succeeded") {
+      alert("Payment successful!");
+      navigate("/confirmation", { state: { serviceName, selectedDate, selectedTime } });
     }
-  }, [serviceName, selectedDate, selectedTime, navigate]);
-
-  // Convert selectedDate and selectedTime to valid Date objects
-  const dateObject = selectedDate ? new Date(selectedDate) : null;
-  const timeObject = selectedTime ? new Date(`1970-01-01T${selectedTime}`) : null;
-
-  // Format date and time safely
-  const formattedDate = dateObject
-    ? dateObject.toLocaleDateString("en-CA") // YYYY-MM-DD format
-    : "Invalid Date";
-
-  const formattedTime = timeObject
-    ? timeObject.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", hour12: true }) // hh:mm AM/PM format
-    : "Invalid Time";
+  };
 
   return (
     <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "100vh", backgroundColor: "#f4f4f4", padding: "20px" }}>
       <Paper elevation={4} sx={{ padding: "32px", maxWidth: "500px", borderRadius: "16px", backgroundColor: "#fff" }}>
-        <Typography variant="h4" fontWeight="bold" color="black" align="center" gutterBottom>
+        <Typography variant="h5" fontWeight="bold" align="center" gutterBottom>
           Payment for {serviceName}
         </Typography>
-        <Typography variant="body1" align="center" gutterBottom>
-          Appointment Date: {formattedDate}
+        <Typography variant="body1" align="center">
+          Date: {selectedDate?.format("YYYY-MM-DD")} | Time: {selectedTime?.format("HH:mm")}
         </Typography>
-        <Typography variant="body1" align="center" gutterBottom>
-          Appointment Time: {formattedTime}
-        </Typography>
+        
+        <Box sx={{ my: 3 }}>
+          <CardElement options={{ hidePostalCode: true }} />
+        </Box>
 
-        {/* Stripe Elements for Payment */}
-        <Elements stripe={stripePromise}>
-          <CheckoutForm serviceName={serviceName} selectedDate={formattedDate} selectedTime={formattedTime} />
-        </Elements>
+        <Button variant="contained" fullWidth onClick={handlePayment} disabled={loading}>
+          {loading ? <CircularProgress size={24} /> : "Pay Now"}
+        </Button>
       </Paper>
     </Box>
   );

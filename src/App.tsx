@@ -9,23 +9,20 @@ import AppointmentsPage from "./components/AppointmentsPage";
 import ReviewsPage from "./components/ReviewsPage";
 import PaymentPage from "./components/PaymentPage";
 import ProfilePage from "./components/ProfilePage";
-import CheckoutForm from "./components/CheckoutForm";
+
 import SuccessPage from "./components/SuccessPage";
-
-
-import { Elements } from "@stripe/react-stripe-js";
-import { loadStripe } from "@stripe/stripe-js";
+import StripeProvider from "./components/StripeProvider";
+import ConfirmationPage from "./components/ConfirmationPage";
 
 
 
-const stripePromise = loadStripe("pk_test_51QudmXCF6DmhXmG4h4qHIHEXCchOtXBPo0Im2kwWeds6ZA09ENqhxZbiSCllT5mXRXT1CwcTx2VOhKgiYWFL7AHj001FK40PnU");
 
 
 const App: React.FC = () => {
   return (
     <Router>
       <CssBaseline />
-      <Elements stripe={stripePromise}></Elements>
+      
       <Container>
         <Routes>
           <Route path="/" element={<ServicesPage />} />
@@ -34,7 +31,7 @@ const App: React.FC = () => {
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/appointments" element={<AppointmentsPage />} />
           <Route path="/payment" element={<PaymentPage />} />
-          
+          <Route path="/confirmation" element={<ConfirmationPage />} />
           <Route path="/success" element={<SuccessPage />} />
           
           
@@ -48,7 +45,7 @@ export default App;
 
 
 
-        
+
 
 
 
