@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { 
   Container, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, 
   Paper, Typography, Chip, Button, Dialog, DialogTitle, DialogContent, 
-  DialogActions, TextField 
+  DialogActions, TextField, Select, MenuItem, InputLabel, FormControl 
 } from "@mui/material";
 
 type Appointment = {
@@ -24,10 +24,14 @@ const mockAppointments: Appointment[] = [
 const AppointmentSchedule: React.FC = () => {
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [selectedAppointment, setSelectedAppointment] = useState<Appointment | null>(null);
+  const [filterStatus, setFilterStatus] = useState<string>("All");
+  const [searchQuery, setSearchQuery] = useState<string>("");
   const [rescheduleDate, setRescheduleDate] = useState("");
   const [rescheduleTime, setRescheduleTime] = useState("");
   const [clientHistory, setClientHistory] = useState<Appointment[]>([]);
   const [historyOpen, setHistoryOpen] = useState(false);
+  const [detailsOpen, setDetailsOpen] = useState(false); // Separate state for details modal
+  const [rescheduleOpen, setRescheduleOpen] = useState(false); // Separate state for reschedule modal
 
   useEffect(() => {
     setAppointments(mockAppointments);
@@ -47,10 +51,45 @@ const AppointmentSchedule: React.FC = () => {
     setHistoryOpen(true);
   };
 
+  const openBookingDetails = (appointment: Appointment) => {
+    setSelectedAppointment(appointment);
+    setDetailsOpen(true); // Open details modal
+  };
+
+  const openRescheduleDialog = (appointment: Appointment) => {
+    setSelectedAppointment(appointment);
+    setRescheduleOpen(true); // Open reschedule modal
+  };
+
+  const filteredAppointments = appointments.filter(app =>
+    (filterStatus === "All" || app.status === filterStatus) &&
+    (searchQuery === "" || app.clientName.toLowerCase().includes(searchQuery.toLowerCase()))
+  );
+
   return (
     <Container>
-      <Typography variant="h5" sx={{ my: 2 }}>Upcoming Appointments</Typography>
-      <TableContainer component={Paper}>
+      <Typography variant="h5" sx={{ my: 2 }}>Appointment Schedule</Typography>
+
+      {/* Filter & Search Bar */}
+      <FormControl sx={{ minWidth: 120, marginRight: 2 }}>
+        <InputLabel>Status</InputLabel>
+        <Select value={filterStatus} onChange={(e) => setFilterStatus(e.target.value)}>
+          <MenuItem value="All">All</MenuItem>
+          <MenuItem value="Pending">Pending</MenuItem>
+          <MenuItem value="Confirmed">Confirmed</MenuItem>
+          <MenuItem value="Canceled">Canceled</MenuItem>
+        </Select>
+      </FormControl>
+
+      <TextField 
+        label="Search Client" 
+        variant="outlined" 
+        size="small" 
+        onChange={(e) => setSearchQuery(e.target.value)}
+      />
+
+      {/* Appointment Table */}
+      <TableContainer component={Paper} sx={{ mt: 2 }}>
         <Table>
           <TableHead>
             <TableRow>
@@ -59,11 +98,12 @@ const AppointmentSchedule: React.FC = () => {
               <TableCell>Date</TableCell>
               <TableCell>Time</TableCell>
               <TableCell>Status</TableCell>
+              <TableCell>Notes</TableCell>
               <TableCell>Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {appointments.map((appointment) => (
+            {filteredAppointments.map((appointment) => (
               <TableRow key={appointment.id}>
                 <TableCell>
                   <Button color="primary" onClick={() => openClientHistory(appointment.clientName)}>
@@ -83,34 +123,18 @@ const AppointmentSchedule: React.FC = () => {
                     } 
                   />
                 </TableCell>
+                <TableCell>{appointment.notes || "No notes"}</TableCell>
                 <TableCell>
-                  {appointment.status === "Pending" && (
-                    <>
-                      <Button 
-                        variant="contained" 
-                        color="primary" 
-                        size="small" 
-                        onClick={() => updateAppointmentStatus(appointment.id, "Confirmed")}
-                      >
-                        Confirm
-                      </Button>
-                      <Button 
-                        variant="contained" 
-                        color="error" 
-                        size="small" 
-                        sx={{ mx: 1 }} 
-                        onClick={() => updateAppointmentStatus(appointment.id, "Canceled")}
-                      >
-                        Cancel
-                      </Button>
-                    </>
-                  )}
-                  <Button 
-                    variant="outlined" 
-                    size="small" 
-                    onClick={() => setSelectedAppointment(appointment)}
-                  >
+                  <Button variant="outlined" size="small" onClick={() => openRescheduleDialog(appointment)}>
                     Reschedule
+                  </Button>
+                  {/* View Details button */}
+                  <Button 
+                    variant="contained" 
+                    size="small" 
+                    sx={{ ml: 1 }} 
+                    onClick={() => openBookingDetails(appointment)}>
+                    View Details
                   </Button>
                 </TableCell>
               </TableRow>
@@ -120,33 +144,19 @@ const AppointmentSchedule: React.FC = () => {
       </TableContainer>
 
       {/* Reschedule Modal */}
-      <Dialog open={Boolean(selectedAppointment)} onClose={() => setSelectedAppointment(null)}>
-        <DialogTitle>Reschedule Booking</DialogTitle>
+      <Dialog open={rescheduleOpen} onClose={() => setRescheduleOpen(false)}>
+        <DialogTitle>Reschedule Appointment</DialogTitle>
         <DialogContent>
-          <TextField 
-            fullWidth 
-            type="date" 
-            label="New Date" 
-            value={rescheduleDate} 
-            onChange={(e) => setRescheduleDate(e.target.value)} 
-            sx={{ my: 1 }}
-          />
-          <TextField 
-            fullWidth 
-            type="time" 
-            label="New Time" 
-            value={rescheduleTime} 
-            onChange={(e) => setRescheduleTime(e.target.value)} 
-            sx={{ my: 1 }}
-          />
+          <TextField fullWidth type="date" label="New Date" value={rescheduleDate} onChange={(e) => setRescheduleDate(e.target.value)} sx={{ my: 1 }} />
+          <TextField fullWidth type="time" label="New Time" value={rescheduleTime} onChange={(e) => setRescheduleTime(e.target.value)} sx={{ my: 1 }} />
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setSelectedAppointment(null)}>Cancel</Button>
+          <Button onClick={() => setRescheduleOpen(false)}>Cancel</Button>
           <Button 
             onClick={() => {
               if (selectedAppointment && rescheduleDate && rescheduleTime) {
                 updateAppointmentStatus(selectedAppointment.id, "Pending", rescheduleDate, rescheduleTime);
-                setSelectedAppointment(null);
+                setRescheduleOpen(false); // Close Reschedule dialog after saving
               }
             }} 
             variant="contained"
@@ -158,7 +168,7 @@ const AppointmentSchedule: React.FC = () => {
 
       {/* Client History Modal */}
       <Dialog open={historyOpen} onClose={() => setHistoryOpen(false)}>
-        <DialogTitle>Client Booking History</DialogTitle>
+        <DialogTitle>Client History</DialogTitle>
         <DialogContent>
           {clientHistory.length > 0 ? (
             <TableContainer component={Paper}>
@@ -169,37 +179,60 @@ const AppointmentSchedule: React.FC = () => {
                     <TableCell>Date</TableCell>
                     <TableCell>Time</TableCell>
                     <TableCell>Status</TableCell>
+                    <TableCell>Notes</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {clientHistory.map((appointment) => (
-                    <TableRow key={appointment.id}>
-                      <TableCell>{appointment.service}</TableCell>
-                      <TableCell>{appointment.date}</TableCell>
-                      <TableCell>{appointment.time}</TableCell>
+                  {clientHistory.map((app) => (
+                    <TableRow key={app.id}>
+                      <TableCell>{app.service}</TableCell>
+                      <TableCell>{app.date}</TableCell>
+                      <TableCell>{app.time}</TableCell>
                       <TableCell>
                         <Chip 
-                          label={appointment.status} 
+                          label={app.status} 
                           color={
-                            appointment.status === "Pending" ? "warning" :
-                            appointment.status === "Confirmed" ? "primary" :
+                            app.status === "Pending" ? "warning" :
+                            app.status === "Confirmed" ? "primary" :
                             "default"
                           } 
                         />
                       </TableCell>
+                      <TableCell>{app.notes || "No notes"}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
               </Table>
             </TableContainer>
           ) : (
-            <Typography>No history found for this client.</Typography>
+            <Typography>No past appointments found.</Typography>
           )}
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setHistoryOpen(false)}>Close</Button>
         </DialogActions>
       </Dialog>
+
+      {/* View Details Modal for Upcoming Appointment */}
+      <Dialog open={detailsOpen} onClose={() => setDetailsOpen(false)}>
+        <DialogTitle>Appointment Details</DialogTitle>
+        <DialogContent>
+          {selectedAppointment && (
+            <div>
+              <Typography><strong>Client:</strong> {selectedAppointment.clientName}</Typography>
+              <Typography><strong>Service:</strong> {selectedAppointment.service}</Typography>
+              <Typography><strong>Date:</strong> {selectedAppointment.date}</Typography>
+              <Typography><strong>Time:</strong> {selectedAppointment.time}</Typography>
+              <Typography><strong>Status:</strong> {selectedAppointment.status}</Typography>
+              <Typography><strong>Notes:</strong> {selectedAppointment.notes || "No notes"}</Typography>
+            </div>
+          )}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setDetailsOpen(false)}>Close</Button>
+        </DialogActions>
+      </Dialog>
+
     </Container>
   );
 };
