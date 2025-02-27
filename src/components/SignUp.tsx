@@ -86,6 +86,7 @@ const Signup: React.FC = () => {
       { name: "businessName", label: "Business Name" },
       { name: "address", label: "Business Address" },
       { name: "businessType", label: "Business Type" },
+      { name: "email", label: "Email" },
       { name: "contactNumber", label: "Contact Number" },
       { name: "password", label: "Password", type: "password" },
       { name: "confirmPassword", label: "Confirm Password", type: "password" },
