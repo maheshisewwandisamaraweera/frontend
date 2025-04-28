@@ -1,13 +1,13 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { Typography, Button, Box, Paper, CircularProgress } from "@mui/material";
-import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
+import { CardElement, useStripe, useElements, Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 
 // Load Stripe public key
 const stripePromise = loadStripe("your-publishable-key-here");
 
-export default function PaymentPage() {
+function PaymentForm() {
   const location = useLocation();
   const navigate = useNavigate();
   const stripe = useStripe();
@@ -20,7 +20,7 @@ export default function PaymentPage() {
     if (!stripe || !elements) return;
 
     setLoading(true);
-    
+
     const { error, paymentIntent } = await stripe.confirmCardPayment("your-client-secret-from-server", {
       payment_method: {
         card: elements.getElement(CardElement)!,
@@ -46,7 +46,7 @@ export default function PaymentPage() {
         <Typography variant="body1" align="center">
           Date: {selectedDate?.format("YYYY-MM-DD")} | Time: {selectedTime?.format("HH:mm")}
         </Typography>
-        
+
         <Box sx={{ my: 3 }}>
           <CardElement options={{ hidePostalCode: true }} />
         </Box>
@@ -56,5 +56,13 @@ export default function PaymentPage() {
         </Button>
       </Paper>
     </Box>
+  );
+}
+
+export default function PaymentPage() {
+  return (
+    <Elements stripe={stripePromise}>
+      <PaymentForm />
+    </Elements>
   );
 }

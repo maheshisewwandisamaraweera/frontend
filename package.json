@@ -4,8 +4,6 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    
-
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
@@ -17,7 +15,7 @@
     "@mui/icons-material": "^6.4.3",
     "@mui/material": "^6.4.3",
     "@mui/x-date-pickers": "^7.27.0",
-    "@stripe/react-stripe-js": "^3.5.1",
+    "@stripe/react-stripe-js": "^3.6.0",
     "@stripe/stripe-js": "^5.10.0",
     "dayjs": "^1.11.13",
     "react": "^19.0.0",
