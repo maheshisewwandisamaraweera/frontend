@@ -12,7 +12,6 @@ import {
   MenuItem,
 } from "@mui/material";
 import { AccountCircle } from "@mui/icons-material";
-import Signup from "./components/SignUp";
 import AppointmentSchedule from "./components/AppointmentList";
 import ServiceProviderAccount from "./components/ServiceProviderAccount";
 
@@ -40,9 +39,6 @@ const App: React.FC = () => {
           <Button color="inherit" component={Link} to="/">
             Appointments
           </Button>
-          <Button color="inherit" component={Link} to="/signup">
-            Signup
-          </Button>
 
           {/* Profile Icon & Menu */}
           <IconButton color="inherit" onClick={handleMenuOpen}>
@@ -67,7 +63,6 @@ const App: React.FC = () => {
       {/* Routes */}
       <Container sx={{ mt: 4 }}>
         <Routes>
-          <Route path="/signup" element={<Signup />} />
           <Route path="/" element={<AppointmentSchedule />} />
           <Route path="/service-provider-account" element={<ServiceProviderAccount />} />
         </Routes>
