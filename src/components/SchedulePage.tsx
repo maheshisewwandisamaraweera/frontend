@@ -4,8 +4,7 @@ import {
   Typography,
   Box,
   Paper,
-  Snackbar,
-  Alert,
+  IconButton,
 } from "@mui/material";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -13,20 +12,13 @@ import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { useParams, useNavigate } from "react-router-dom";
 import { Dayjs } from "dayjs";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle"; // Profile icon import
-import IconButton from '@mui/material/IconButton';  // Import IconButton
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 export default function SchedulePage() {
   const { serviceName } = useParams(); // Get selected service from URL
   const [selectedDate, setSelectedDate] = useState<Dayjs | null>(null);
   const [selectedTime, setSelectedTime] = useState<Dayjs | null>(null);
-  const [openSnackbar, setOpenSnackbar] = useState(false);
-  const navigate = useNavigate(); // Use navigate for navigation
-
-  // Handle Date Change
-  const handleDateChange = (newDate: Dayjs | null) => {
-    setSelectedDate(newDate);
-  };
+  const navigate = useNavigate();
 
   const handleSubmit = () => {
     if (!serviceName || !selectedDate || !selectedTime) {
@@ -34,24 +26,28 @@ export default function SchedulePage() {
       return;
     }
 
-    // Navigate to the PaymentPage and pass service details, selected date, and time as state
     navigate("/payment", {
       state: {
         serviceName,
-        selectedDate,
-        selectedTime,
+        selectedDate: selectedDate.toISOString(), // convert to string
+        selectedTime: selectedTime.toISOString(), // convert to string
       },
     });
   };
 
-  // Handle Profile Button click
   const handleProfileClick = () => {
-    navigate("/profile"); // Redirect to Profile page
+    navigate("/profile");
   };
 
   return (
-    <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "100vh", backgroundColor: "#f4f4f4", padding: "20px" }}>
-      {/* Profile Button */}
+    <Box sx={{
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      minHeight: "100vh",
+      backgroundColor: "#f4f4f4",
+      padding: "20px"
+    }}>
       <IconButton
         sx={{
           position: "fixed",
@@ -60,9 +56,7 @@ export default function SchedulePage() {
           zIndex: 1000,
           backgroundColor: "#1976d2",
           color: "white",
-          "&:hover": {
-            backgroundColor: "#1565c0",
-          },
+          "&:hover": { backgroundColor: "#1565c0" },
         }}
         onClick={handleProfileClick}
       >
@@ -70,7 +64,7 @@ export default function SchedulePage() {
       </IconButton>
 
       <Paper elevation={4} sx={{ padding: "32px", maxWidth: "500px", borderRadius: "16px", backgroundColor: "#fff" }}>
-        <Typography variant="h4" fontWeight="bold" color="black" align="center" gutterBottom>
+        <Typography variant="h4" fontWeight="bold" align="center" gutterBottom>
           Schedule an Appointment for {serviceName}
         </Typography>
 
@@ -78,14 +72,14 @@ export default function SchedulePage() {
           <DatePicker
             label="Select Date"
             value={selectedDate}
-            onChange={handleDateChange}
+            onChange={setSelectedDate}
             sx={{ mb: 2, width: '100%' }}
           />
           <TimePicker
             label="Select Time"
             value={selectedTime}
             onChange={setSelectedTime}
-            sx={{ mb: 3, width: '100%' }} // Apply full width via sx
+            sx={{ mb: 3, width: '100%' }}
           />
         </LocalizationProvider>
 

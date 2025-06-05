@@ -7,20 +7,56 @@ export default function ConfirmationPage() {
   const { serviceName, selectedDate, selectedTime } = location.state || {};
 
   return (
-    <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "100vh", backgroundColor: "#f4f4f4", padding: "20px" }}>
-      <Paper elevation={4} sx={{ padding: "32px", maxWidth: "500px", borderRadius: "16px", backgroundColor: "#fff" }}>
-        <Typography variant="h5" fontWeight="bold" align="center" gutterBottom>
-          Appointment Confirmed! 🎉
-        </Typography>
-        <Typography variant="body1" align="center">
-          Your appointment for {serviceName} is confirmed.
-        </Typography>
-        <Typography variant="body1" align="center">
-          Date: {selectedDate?.format("YYYY-MM-DD")} | Time: {selectedTime?.format("HH:mm")}
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        minHeight: "100vh",
+        backgroundColor: "#f0f4f8",
+        padding: "24px",
+      }}
+    >
+      <Paper
+        elevation={6}
+        sx={{
+          padding: "48px",
+          maxWidth: "650px",
+          width: "100%",
+          borderRadius: "24px",
+          backgroundColor: "#ffffff",
+          boxShadow: "0 8px 24px rgba(0, 0, 0, 0.1)",
+        }}
+      >
+        <Typography variant="h4" fontWeight="bold" align="center" gutterBottom>
+          🎉 Appointment Confirmed!
         </Typography>
 
-        <Button variant="contained" fullWidth sx={{ mt: 2 }} onClick={() => navigate("/")}>
-          Back to Home
+        <Typography variant="h6" align="center" color="text.secondary" sx={{ mb: 3 }}>
+          Your appointment for <strong>{serviceName}</strong> is successfully booked.
+        </Typography>
+
+        <Box sx={{ textAlign: "center", mb: 4 }}>
+          <Typography variant="body1" fontSize="18px">
+            📅 <strong>Date:</strong> {selectedDate?.format("YYYY-MM-DD")}
+          </Typography>
+          <Typography variant="body1" fontSize="18px">
+            ⏰ <strong>Time:</strong> {selectedTime?.format("HH:mm")}
+          </Typography>
+        </Box>
+
+        <Button
+          variant="contained"
+          fullWidth
+          sx={{
+            mt: 2,
+            py: 1.5,
+            fontSize: "16px",
+            borderRadius: "12px",
+          }}
+          onClick={() => navigate("/")}
+        >
+          🔙 Back to Services
         </Button>
       </Paper>
     </Box>
