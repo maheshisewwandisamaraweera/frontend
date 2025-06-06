@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Link,Navigate } from "react-router-dom";
 import {
   CssBaseline,
   AppBar,
@@ -14,8 +14,6 @@ import {
 import { AccountCircle } from "@mui/icons-material";
 import AppointmentSchedule from "./components/AppointmentList";
 import ServiceProviderAccount from "./components/ServiceProviderAccount";
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import AddServiceProvider from './components/AddServiceProvider';
 import SuperAdminDashboard from './components/SuperAdminDashboard';
 import RejectServiceProvider from './components/RejectServiceProvider';
@@ -28,7 +26,6 @@ import EnterOTP from "./components/EnterOtp";
 import ResetPassword from "./components/ResetPassword";
 import PasswordResetSuccess from "./components/PasswordResetSuccess";
 import HomePage from './components/Home'
-import { CssBaseline, Container } from "@mui/material";
 //import Navbar from "./components/Navbar";
 import ServicesPage from "./components/ServicesPage";
 import SchedulePage from "./components/SchedulePage";
