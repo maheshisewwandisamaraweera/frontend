@@ -1,6 +1,17 @@
 import React from 'react';
-import { Grid, Card, CardContent, Typography, Button, Box } from '@mui/material';
-import { CheckCircle, HourglassEmpty, Cancel } from '@mui/icons-material';
+import {
+  Grid,
+  Card,
+  CardContent,
+  Typography,
+  Button,
+  Box,
+} from '@mui/material';
+import {
+  CheckCircle,
+  HourglassEmpty,
+  Cancel,
+} from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 
 interface ServiceProviderStats {
@@ -10,7 +21,7 @@ interface ServiceProviderStats {
 }
 
 const SuperAdminDashboard: React.FC = () => {
-  const navigate = useNavigate(); // Initialize navigate function
+  const navigate = useNavigate();
 
   const serviceProviderStats: ServiceProviderStats = {
     active: 20,
@@ -18,95 +29,123 @@ const SuperAdminDashboard: React.FC = () => {
     deactivated: 3,
   };
 
-  // Button click handlers for redirection
-  const handleAddServiceProvider = () => {
-    navigate('/add-service-provider'); // Navigate to Add Service Provider page
-  };
-
-  const handleRejectServiceProviders = () => {
-    navigate('/reject-service-providers'); // Navigate to Reject Service Providers page
-  };
-
-  const handleActivateServiceProviders = () => {
-    navigate('/activate-service-providers'); // Navigate to Activate Service Providers page
-  };
-
-  const handleDeactivateServiceProviders = () => {
-    navigate('/deactivate-service-providers'); // Navigate to Deactivate Service Providers page
-  };
-
-  const handleViewNotifications = () => {
-    console.log('Redirect to notifications page');
-  };
+  // Navigation handlers
+  const handleAddServiceProvider = () => navigate('/add-service-provider');
+  const handleRejectServiceProviders = () => navigate('/reject-service-provider');
+  const handleActivateServiceProviders = () => navigate('/activate-service-provider');
+  const handleDeactivateServiceProviders = () => navigate('/deactivate-service-provider');
+  const handleViewNotifications = () => console.log('Redirect to notifications page');
 
   return (
-    <Box sx={{ padding: 2, height: '100vh' }}>
-      <Grid container spacing={3} sx={{ height: '100%' }}>
-        {/* First Box: Overview of Service Providers */}
-        <Grid item xs={12} sm={6} md={4} sx={{ height: '100%' }}>
-          <Card sx={{ height: '100%' }}>
+    <Box
+      sx={{
+        padding: 4,
+        backgroundColor: '#f5f5f5',
+        minHeight: '100vh',
+      }}
+    >
+      <Typography
+        variant="h4"
+        fontWeight={700}
+        align="center"
+        gutterBottom
+        sx={{ mb: 4 }}
+      >
+        Super Admin Dashboard
+      </Typography>
+
+      <Grid container spacing={4}>
+        {/* Overview Box */}
+        <Grid item xs={12} md={4}>
+          <Card
+            sx={{
+              borderRadius: 4,
+              boxShadow: 4,
+              height: '100%',
+              p: 2,
+            }}
+          >
             <CardContent>
-              <Typography variant="h5" component="h2" gutterBottom>
-                Overview of Service Provider Admin
+              <Typography variant="h5" fontWeight={600} gutterBottom>
+                Overview of Service Providers
               </Typography>
+
               <Grid container spacing={2}>
                 <Grid item xs={4}>
-                  <Card sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <CheckCircle color="success" sx={{ fontSize: 40 }} />
+                  <Card sx={{ p: 2, textAlign: 'center', boxShadow: 2 }}>
+                    <CheckCircle color="success" sx={{ fontSize: 36 }} />
                     <Typography variant="h6">{serviceProviderStats.active}</Typography>
+                    <Typography variant="body2" color="text.secondary">Active</Typography>
                   </Card>
-                  <Typography variant="body2" color="textSecondary">Active</Typography>
                 </Grid>
                 <Grid item xs={4}>
-                  <Card sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <HourglassEmpty color="warning" sx={{ fontSize: 40 }} />
+                  <Card sx={{ p: 2, textAlign: 'center', boxShadow: 2 }}>
+                    <HourglassEmpty color="warning" sx={{ fontSize: 36 }} />
                     <Typography variant="h6">{serviceProviderStats.pending}</Typography>
+                    <Typography variant="body2" color="text.secondary">Pending</Typography>
                   </Card>
-                  <Typography variant="body2" color="textSecondary">Pending</Typography>
                 </Grid>
                 <Grid item xs={4}>
-                  <Card sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <Cancel color="error" sx={{ fontSize: 40 }} />
+                  <Card sx={{ p: 2, textAlign: 'center', boxShadow: 2 }}>
+                    <Cancel color="error" sx={{ fontSize: 36 }} />
                     <Typography variant="h6">{serviceProviderStats.deactivated}</Typography>
+                    <Typography variant="body2" color="text.secondary">Deactivated</Typography>
                   </Card>
-                  <Typography variant="body2" color="textSecondary">Deactivated</Typography>
                 </Grid>
               </Grid>
             </CardContent>
           </Card>
         </Grid>
 
-        {/* Second Box: Notifications */}
-        <Grid item xs={12} sm={6} md={4} sx={{ height: '100%' }}>
-          <Card sx={{ height: '100%' }}>
+        {/* Notifications Box */}
+        <Grid item xs={12} md={4}>
+          <Card
+            sx={{
+              borderRadius: 4,
+              boxShadow: 4,
+              height: '100%',
+              p: 2,
+            }}
+          >
             <CardContent>
-              <Typography variant="h5" component="h2" gutterBottom>
+              <Typography variant="h5" fontWeight={600} gutterBottom>
                 Notifications
               </Typography>
-              <Typography variant="body1">
+              <Typography variant="body1" sx={{ mb: 2 }}>
                 No new updates at the moment.
               </Typography>
-              <Button variant="contained" color="primary" onClick={handleViewNotifications} sx={{ marginTop: 2 }}>
+              <Button
+                variant="contained"
+                fullWidth
+                color="primary"
+                onClick={handleViewNotifications}
+              >
                 View All Notifications
               </Button>
             </CardContent>
           </Card>
         </Grid>
 
-        {/* Third Box: Quick Links */}
-        <Grid item xs={12} sm={6} md={4} sx={{ height: '100%' }}>
-          <Card sx={{ height: '100%' }}>
+        {/* Quick Links Box */}
+        <Grid item xs={12} md={4}>
+          <Card
+            sx={{
+              borderRadius: 4,
+              boxShadow: 4,
+              height: '100%',
+              p: 2,
+            }}
+          >
             <CardContent>
-              <Typography variant="h5" component="h2" gutterBottom>
+              <Typography variant="h5" fontWeight={600} gutterBottom>
                 Quick Links
               </Typography>
               <Grid container spacing={2}>
                 <Grid item xs={12}>
                   <Button
                     variant="contained"
-                    color="primary"
-                    size="large"
                     fullWidth
+                    color="primary"
                     onClick={handleAddServiceProvider}
                   >
                     Add New Service Provider Admin
@@ -115,9 +154,8 @@ const SuperAdminDashboard: React.FC = () => {
                 <Grid item xs={12}>
                   <Button
                     variant="contained"
-                    color="secondary"
-                    size="large"
                     fullWidth
+                    color="secondary"
                     onClick={handleRejectServiceProviders}
                   >
                     Reject Service Provider Admin
@@ -126,9 +164,8 @@ const SuperAdminDashboard: React.FC = () => {
                 <Grid item xs={12}>
                   <Button
                     variant="contained"
-                    color="success"
-                    size="large"
                     fullWidth
+                    color="success"
                     onClick={handleActivateServiceProviders}
                   >
                     Activate Service Provider Admin
@@ -137,9 +174,8 @@ const SuperAdminDashboard: React.FC = () => {
                 <Grid item xs={12}>
                   <Button
                     variant="contained"
-                    color="warning"
-                    size="large"
                     fullWidth
+                    color="warning"
                     onClick={handleDeactivateServiceProviders}
                   >
                     Deactivate Service Provider Admin

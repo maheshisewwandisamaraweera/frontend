@@ -1,50 +1,24 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { CssBaseline, Container } from '@mui/material';
-import SuperAdminDashboard from './components/SuperAdminDashboard'
-import Login from './components/Login';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import AddServiceProvider from './components/AddServiceProvider';
-
-// Create a custom theme for MUI
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: '#1976d2',
-    },
-    secondary: {
-      main: '#f50057',
-    },
-    error: {
-      main: '#d32f2f',
-    },
-    warning: {
-      main: '#ff9800',
-    },
-    success: {
-      main: '#4caf50',
-    },
-  },
-});
+import SuperAdminDashboard from './components/SuperAdminDashboard';
+import RejectServiceProvider from './components/RejectServiceProvider';
+import ActivateServiceProvider from './components/ActivateServiceProvider';
+import DeactivateServiceProvider from './components/DeactivateServiceProvider'
 
 const App: React.FC = () => {
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <Router>
-        <Container maxWidth="lg">
-          <Routes>
-            <Route path="/login" element={<Login />} />
-            <Route path="/" element={<SuperAdminDashboard />} /> {/* Updated route */}
-            <Route path="/add-service-provider" element={<AddServiceProvider />} />
-          </Routes>
-        </Container>
-      </Router>
-    </ThemeProvider>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Navigate to="/dashboard" replace />} />
+        <Route path="/dashboard" element={<SuperAdminDashboard />} />
+        <Route path="/add-service-provider" element={<AddServiceProvider />} />
+        <Route path="/reject-service-provider" element={<RejectServiceProvider />} />
+        <Route path="/activate-service-provider" element={<ActivateServiceProvider />} />
+        <Route path="/deactivate-service-provider" element={<DeactivateServiceProvider />} />
+      </Routes>
+    </Router>
   );
 };
 
 export default App;
-
-
-
