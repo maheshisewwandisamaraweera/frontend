@@ -1,6 +1,10 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { CssBaseline } from "@mui/material";
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import AddServiceProvider from './components/AddServiceProvider';
+import SuperAdminDashboard from './components/SuperAdminDashboard';
+import RejectServiceProvider from './components/RejectServiceProvider';
+import ActivateServiceProvider from './components/ActivateServiceProvider';
+import DeactivateServiceProvider from './components/DeactivateServiceProvider'
 import Login from "./components/Login";
 import Signup from "./components/SignUp";
 import ForgotPassword from "./components/ForgetPassword";
@@ -22,17 +26,18 @@ import SuccessPage from "./components/SuccessPage";
 import StripeProvider from "./components/StripeProvider";
 import ConfirmationPage from "./components/ConfirmationPage";
 
-
-
-
-
 const App: React.FC = () => {
   return (
     <Router>
       <CssBaseline />
-      
       <Container>
         <Routes>
+          <Route path="/" element={<Navigate to="/dashboard" replace />} />
+          <Route path="/dashboard" element={<SuperAdminDashboard />} />
+          <Route path="/add-service-provider" element={<AddServiceProvider />} />
+          <Route path="/reject-service-provider" element={<RejectServiceProvider />} />
+          <Route path="/activate-service-provider" element={<ActivateServiceProvider />} />
+          <Route path="/deactivate-service-provider" element={<DeactivateServiceProvider />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
@@ -55,5 +60,3 @@ const App: React.FC = () => {
 };
 
 export default App;
-
-
