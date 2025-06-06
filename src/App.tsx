@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route, Link,Navigate } from "react-router-dom";
 import {
-  CssBaseline,
+  CssBaseline, Container,
   AppBar,
   Toolbar,
   Typography,
@@ -19,8 +19,8 @@ import SuperAdminDashboard from './components/SuperAdminDashboard';
 import RejectServiceProvider from './components/RejectServiceProvider';
 import ActivateServiceProvider from './components/ActivateServiceProvider';
 import DeactivateServiceProvider from './components/DeactivateServiceProvider'
-import Login from "./components/Login";
-import Signup from "./components/SignUp";
+import ServiceProviderAdminProfile from "./components/ServiceProviderAdminProfilePage";
+import ServiceList from "./components/ServiceList";
 import ForgotPassword from "./components/ForgetPassword";
 import EnterOTP from "./components/EnterOtp";
 import ResetPassword from "./components/ResetPassword";
@@ -38,6 +38,8 @@ import ProfilePage from "./components/ProfilePage";
 import SuccessPage from "./components/SuccessPage";
 import StripeProvider from "./components/StripeProvider";
 import ConfirmationPage from "./components/ConfirmationPage";
+import ServiceStaffList from './components/ServiceStaffList';
+
 
 const App: React.FC = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
