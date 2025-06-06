@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Box, TextField, Button, Typography, InputAdornment, IconButton, Link } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { Link as RouterLink } from "react-router-dom"; // Add this import
+import { Link as RouterLink } from "react-router-dom"; // Import React Router Link
 
 const Login: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -49,11 +49,12 @@ const Login: React.FC = () => {
           }}
         />
         <Box display="flex" justifyContent="flex-end" mt={2}>
-          <Link href="#" underline="hover" fontSize="medium">
+          {/* Update Forget Password Link to navigate to /forgot-password */}
+          <Link component={RouterLink} to="/forgot-password" underline="hover" fontSize="medium">
             Forget Password?
           </Link>
         </Box>
-        <Button fullWidth variant="contained" color="primary" sx={{ mt: 4 }}>
+        <Button fullWidth variant="contained" sx={{ mt: 4, bgcolor: "black", color: "white", '&:hover': { bgcolor: "#333" } }}>
           Login
         </Button>
         <Box mt={3} textAlign="center">
