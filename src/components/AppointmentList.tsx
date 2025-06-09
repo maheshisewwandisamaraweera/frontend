@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { 
-  Container, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, 
+  Box, Container, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, 
   Paper, Typography, Chip, Button, Dialog, DialogTitle, DialogContent, 
   DialogActions, TextField, Select, MenuItem, InputLabel, FormControl 
 } from "@mui/material";
@@ -30,8 +30,8 @@ const AppointmentSchedule: React.FC = () => {
   const [rescheduleTime, setRescheduleTime] = useState("");
   const [clientHistory, setClientHistory] = useState<Appointment[]>([]);
   const [historyOpen, setHistoryOpen] = useState(false);
-  const [detailsOpen, setDetailsOpen] = useState(false); // Separate state for details modal
-  const [rescheduleOpen, setRescheduleOpen] = useState(false); // Separate state for reschedule modal
+  const [detailsOpen, setDetailsOpen] = useState(false);
+  const [rescheduleOpen, setRescheduleOpen] = useState(false);
 
   useEffect(() => {
     setAppointments(mockAppointments);
@@ -53,12 +53,12 @@ const AppointmentSchedule: React.FC = () => {
 
   const openBookingDetails = (appointment: Appointment) => {
     setSelectedAppointment(appointment);
-    setDetailsOpen(true); // Open details modal
+    setDetailsOpen(true);
   };
 
   const openRescheduleDialog = (appointment: Appointment) => {
     setSelectedAppointment(appointment);
-    setRescheduleOpen(true); // Open reschedule modal
+    setRescheduleOpen(true);
   };
 
   const filteredAppointments = appointments.filter(app =>
@@ -67,173 +67,180 @@ const AppointmentSchedule: React.FC = () => {
   );
 
   return (
-    <Container>
-      <Typography variant="h5" sx={{ my: 2 }}>Appointment Schedule</Typography>
+    <Box 
+      display="flex" 
+      justifyContent="center" 
+      alignItems="center" 
+      minHeight="100vh" 
+      bgcolor="#f5f5f5"
+    >
+      <Paper elevation={3} sx={{ padding: 4, maxWidth: 1200, width: "100%" }}>
+        <Typography variant="h5" sx={{ mb: 3, textAlign: "center" }}>Appointment Schedule</Typography>
 
-      {/* Filter & Search Bar */}
-      <FormControl sx={{ minWidth: 120, marginRight: 2 }}>
-        <InputLabel>Status</InputLabel>
-        <Select value={filterStatus} onChange={(e) => setFilterStatus(e.target.value)}>
-          <MenuItem value="All">All</MenuItem>
-          <MenuItem value="Pending">Pending</MenuItem>
-          <MenuItem value="Confirmed">Confirmed</MenuItem>
-          <MenuItem value="Canceled">Canceled</MenuItem>
-        </Select>
-      </FormControl>
+        {/* Filter & Search */}
+        <Box display="flex" gap={2} flexWrap="wrap" mb={2}>
+          <FormControl sx={{ minWidth: 120 }}>
+            <InputLabel>Status</InputLabel>
+            <Select value={filterStatus} onChange={(e) => setFilterStatus(e.target.value)}>
+              <MenuItem value="All">All</MenuItem>
+              <MenuItem value="Pending">Pending</MenuItem>
+              <MenuItem value="Confirmed">Confirmed</MenuItem>
+              <MenuItem value="Canceled">Canceled</MenuItem>
+            </Select>
+          </FormControl>
+          <TextField 
+            label="Search Client" 
+            variant="outlined" 
+            size="small" 
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+        </Box>
 
-      <TextField 
-        label="Search Client" 
-        variant="outlined" 
-        size="small" 
-        onChange={(e) => setSearchQuery(e.target.value)}
-      />
-
-      {/* Appointment Table */}
-      <TableContainer component={Paper} sx={{ mt: 2 }}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Client</TableCell>
-              <TableCell>Service</TableCell>
-              <TableCell>Date</TableCell>
-              <TableCell>Time</TableCell>
-              <TableCell>Status</TableCell>
-              <TableCell>Notes</TableCell>
-              <TableCell>Actions</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {filteredAppointments.map((appointment) => (
-              <TableRow key={appointment.id}>
-                <TableCell>
-                  <Button color="primary" onClick={() => openClientHistory(appointment.clientName)}>
-                    {appointment.clientName}
-                  </Button>
-                </TableCell>
-                <TableCell>{appointment.service}</TableCell>
-                <TableCell>{appointment.date}</TableCell>
-                <TableCell>{appointment.time}</TableCell>
-                <TableCell>
-                  <Chip 
-                    label={appointment.status} 
-                    color={
-                      appointment.status === "Pending" ? "warning" :
-                      appointment.status === "Confirmed" ? "primary" :
-                      "default"
-                    } 
-                  />
-                </TableCell>
-                <TableCell>{appointment.notes || "No notes"}</TableCell>
-                <TableCell>
-                  <Button variant="outlined" size="small" onClick={() => openRescheduleDialog(appointment)}>
-                    Reschedule
-                  </Button>
-                  {/* View Details button */}
-                  <Button 
-                    variant="contained" 
-                    size="small" 
-                    sx={{ ml: 1 }} 
-                    onClick={() => openBookingDetails(appointment)}>
-                    View Details
-                  </Button>
-                </TableCell>
+        {/* Appointment Table */}
+        <TableContainer component={Paper}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>Client</TableCell>
+                <TableCell>Service</TableCell>
+                <TableCell>Date</TableCell>
+                <TableCell>Time</TableCell>
+                <TableCell>Status</TableCell>
+                <TableCell>Notes</TableCell>
+                <TableCell>Actions</TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+            </TableHead>
+            <TableBody>
+              {filteredAppointments.map((appointment) => (
+                <TableRow key={appointment.id}>
+                  <TableCell>
+                    <Button color="primary" onClick={() => openClientHistory(appointment.clientName)}>
+                      {appointment.clientName}
+                    </Button>
+                  </TableCell>
+                  <TableCell>{appointment.service}</TableCell>
+                  <TableCell>{appointment.date}</TableCell>
+                  <TableCell>{appointment.time}</TableCell>
+                  <TableCell>
+                    <Chip 
+                      label={appointment.status} 
+                      color={
+                        appointment.status === "Pending" ? "warning" :
+                        appointment.status === "Confirmed" ? "primary" :
+                        "default"
+                      } 
+                    />
+                  </TableCell>
+                  <TableCell>{appointment.notes || "No notes"}</TableCell>
+                  <TableCell>
+                    <Button variant="outlined" size="small" onClick={() => openRescheduleDialog(appointment)}>
+                      Reschedule
+                    </Button>
+                    <Button 
+                      variant="contained" 
+                      size="small" 
+                      sx={{ ml: 1 }} 
+                      onClick={() => openBookingDetails(appointment)}>
+                      View Details
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
 
-      {/* Reschedule Modal */}
-      <Dialog open={rescheduleOpen} onClose={() => setRescheduleOpen(false)}>
-        <DialogTitle>Reschedule Appointment</DialogTitle>
-        <DialogContent>
-          <TextField fullWidth type="date" label="New Date" value={rescheduleDate} onChange={(e) => setRescheduleDate(e.target.value)} sx={{ my: 1 }} />
-          <TextField fullWidth type="time" label="New Time" value={rescheduleTime} onChange={(e) => setRescheduleTime(e.target.value)} sx={{ my: 1 }} />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setRescheduleOpen(false)}>Cancel</Button>
-          <Button 
-            onClick={() => {
-              if (selectedAppointment && rescheduleDate && rescheduleTime) {
-                updateAppointmentStatus(selectedAppointment.id, "Pending", rescheduleDate, rescheduleTime);
-                setRescheduleOpen(false); // Close Reschedule dialog after saving
-              }
-            }} 
-            variant="contained"
-          >
-            Save
-          </Button>
-        </DialogActions>
-      </Dialog>
+        {/* Reschedule Modal */}
+        <Dialog open={rescheduleOpen} onClose={() => setRescheduleOpen(false)}>
+          <DialogTitle>Reschedule Appointment</DialogTitle>
+          <DialogContent>
+            <TextField fullWidth type="date" label="New Date" value={rescheduleDate} onChange={(e) => setRescheduleDate(e.target.value)} sx={{ my: 1 }} />
+            <TextField fullWidth type="time" label="New Time" value={rescheduleTime} onChange={(e) => setRescheduleTime(e.target.value)} sx={{ my: 1 }} />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setRescheduleOpen(false)}>Cancel</Button>
+            <Button 
+              onClick={() => {
+                if (selectedAppointment && rescheduleDate && rescheduleTime) {
+                  updateAppointmentStatus(selectedAppointment.id, "Pending", rescheduleDate, rescheduleTime);
+                  setRescheduleOpen(false);
+                }
+              }} 
+              variant="contained"
+            >
+              Save
+            </Button>
+          </DialogActions>
+        </Dialog>
 
-      {/* Client History Modal */}
-      <Dialog open={historyOpen} onClose={() => setHistoryOpen(false)}>
-        <DialogTitle>Client History</DialogTitle>
-        <DialogContent>
-          {clientHistory.length > 0 ? (
-            <TableContainer component={Paper}>
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Service</TableCell>
-                    <TableCell>Date</TableCell>
-                    <TableCell>Time</TableCell>
-                    <TableCell>Status</TableCell>
-                    <TableCell>Notes</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {clientHistory.map((app) => (
-                    <TableRow key={app.id}>
-                      <TableCell>{app.service}</TableCell>
-                      <TableCell>{app.date}</TableCell>
-                      <TableCell>{app.time}</TableCell>
-                      <TableCell>
-                        <Chip 
-                          label={app.status} 
-                          color={
-                            app.status === "Pending" ? "warning" :
-                            app.status === "Confirmed" ? "primary" :
-                            "default"
-                          } 
-                        />
-                      </TableCell>
-                      <TableCell>{app.notes || "No notes"}</TableCell>
+        {/* Client History Modal */}
+        <Dialog open={historyOpen} onClose={() => setHistoryOpen(false)}>
+          <DialogTitle>Client History</DialogTitle>
+          <DialogContent>
+            {clientHistory.length > 0 ? (
+              <TableContainer component={Paper}>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Service</TableCell>
+                      <TableCell>Date</TableCell>
+                      <TableCell>Time</TableCell>
+                      <TableCell>Status</TableCell>
+                      <TableCell>Notes</TableCell>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          ) : (
-            <Typography>No past appointments found.</Typography>
-          )}
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setHistoryOpen(false)}>Close</Button>
-        </DialogActions>
-      </Dialog>
+                  </TableHead>
+                  <TableBody>
+                    {clientHistory.map((app) => (
+                      <TableRow key={app.id}>
+                        <TableCell>{app.service}</TableCell>
+                        <TableCell>{app.date}</TableCell>
+                        <TableCell>{app.time}</TableCell>
+                        <TableCell>
+                          <Chip 
+                            label={app.status} 
+                            color={
+                              app.status === "Pending" ? "warning" :
+                              app.status === "Confirmed" ? "primary" :
+                              "default"
+                            } 
+                          />
+                        </TableCell>
+                        <TableCell>{app.notes || "No notes"}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            ) : (
+              <Typography>No past appointments found.</Typography>
+            )}
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setHistoryOpen(false)}>Close</Button>
+          </DialogActions>
+        </Dialog>
 
-      {/* View Details Modal for Upcoming Appointment */}
-      <Dialog open={detailsOpen} onClose={() => setDetailsOpen(false)}>
-        <DialogTitle>Appointment Details</DialogTitle>
-        <DialogContent>
-          {selectedAppointment && (
-            <div>
-              <Typography><strong>Client:</strong> {selectedAppointment.clientName}</Typography>
-              <Typography><strong>Service:</strong> {selectedAppointment.service}</Typography>
-              <Typography><strong>Date:</strong> {selectedAppointment.date}</Typography>
-              <Typography><strong>Time:</strong> {selectedAppointment.time}</Typography>
-              <Typography><strong>Status:</strong> {selectedAppointment.status}</Typography>
-              <Typography><strong>Notes:</strong> {selectedAppointment.notes || "No notes"}</Typography>
-            </div>
-          )}
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setDetailsOpen(false)}>Close</Button>
-        </DialogActions>
-      </Dialog>
-
-    </Container>
+        {/* View Details Modal */}
+        <Dialog open={detailsOpen} onClose={() => setDetailsOpen(false)}>
+          <DialogTitle>Appointment Details</DialogTitle>
+          <DialogContent>
+            {selectedAppointment && (
+              <Box>
+                <Typography><strong>Client:</strong> {selectedAppointment.clientName}</Typography>
+                <Typography><strong>Service:</strong> {selectedAppointment.service}</Typography>
+                <Typography><strong>Date:</strong> {selectedAppointment.date}</Typography>
+                <Typography><strong>Time:</strong> {selectedAppointment.time}</Typography>
+                <Typography><strong>Status:</strong> {selectedAppointment.status}</Typography>
+                <Typography><strong>Notes:</strong> {selectedAppointment.notes || "No notes"}</Typography>
+              </Box>
+            )}
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setDetailsOpen(false)}>Close</Button>
+          </DialogActions>
+        </Dialog>
+      </Paper>
+    </Box>
   );
 };
 

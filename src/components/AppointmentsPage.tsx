@@ -34,7 +34,7 @@ export default function AppointmentsPage() {
   };
 
   const handleNavigateBack = () => {
-    navigate("/"); // Redirect back to the profile page
+    navigate("/services"); // Redirect back to the profile page
   };
 
   useEffect(() => {
