@@ -13,6 +13,7 @@ import {
 } from "@mui/material";
 import { SelectChangeEvent } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
+import axios from "axios";
 
 const Signup: React.FC = () => {
   const [role, setRole] = useState<string>("client");
@@ -61,9 +62,27 @@ const Signup: React.FC = () => {
   };
 
   const handleSubmit = () => {
-    if (validate()) {
-      console.log("Form Submitted:", formValues);
-    }
+    const userData = {
+      username: formValues.username,
+      address: formValues.address,
+      email: formValues.email,
+      contactNumber: formValues.contactNumber,
+      password: formValues.password,
+      businessName: formValues.businessName,
+      businessType: formValues.businessType,
+      role: role,
+    };
+    console.log("Submitting form with values:", userData);
+    // send the formValues to the backend or perform further actions
+    axios.post("http://localhost:3000/user/register", userData)
+      .then((response) => {
+        console.log("Signup successful:", response.data);
+        // Redirect or show success message
+      })
+      .catch((error) => {
+        console.error("Signup error:", error);
+        // Handle error (e.g., show error message)
+      });
   };
 
   const passwordStrength = () => {
