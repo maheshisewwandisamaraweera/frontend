@@ -77,6 +77,8 @@ const Signup: React.FC = () => {
     axios.post("http://localhost:3000/user/register", userData)
       .then((response) => {
         console.log("Signup successful:", response.data);
+        const token = response.data.token;
+        localStorage.setItem("token", token);
         // Redirect or show success message
       })
       .catch((error) => {
