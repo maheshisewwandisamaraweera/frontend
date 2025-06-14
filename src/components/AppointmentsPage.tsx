@@ -1,95 +1,109 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, use } from "react";
 import { Box, Paper, Typography, Button, Grid, Avatar } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import toast from "react-hot-toast";
+import AppointmentCard from "../components/AppointmentCard"; // Import the AppointmentCard component
+import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from "@mui/material";
 
 export default function AppointmentsPage() {
   const navigate = useNavigate();
+  const userId = JSON.parse(localStorage.getItem("user") || "{}").id;
 
-  // Example state for appointments (could come from a backend API in a real application)
   const [appointments, setAppointments] = useState<any[]>([
-    {
-      id: "1",
-      serviceName: "Haircut",
-      date: "2025-02-25T10:30:00",
-      status: "Upcoming",
-    },
-    {
-      id: "2",
-      serviceName: "Facial Treatment",
-      date: "2025-02-20T15:00:00",
-      status: "Past",
-    },
+    // {
+    //   id: "1",
+    //   serviceName: "Haircut",
+    //   date: "2025-02-25T10:30:00",
+    //   status: "Upcoming",
+    // },
+    // {
+    //   id: "2",
+    //   serviceName: "Facial Treatment",
+    //   date: "2025-02-20T15:00:00",
+    //   status: "Past",
+    // },
   ]);
+  const [open, setOpen] = useState(false);
 
-  const handleCancelAppointment = (appointmentId: string) => {
-    // Logic to cancel appointment (e.g., API call)
-    setAppointments((prev) =>
-      prev.map((appointment) =>
-        appointment.id === appointmentId
-          ? { ...appointment, status: "Canceled" }
-          : appointment
-      )
-    );
-    alert("Appointment canceled successfully!");
+  const [selectedId, setSelectedId] = useState<string | number | null>(null);
+
+  const handleOpenModal = (id: string | number) => {
+    setSelectedId(id);
+    setOpen(true);
   };
 
+  const handleCloseModal = () => {
+    setOpen(false);
+    setSelectedId(null);
+  };
+
+  useEffect(() => {
+    const fetchAppointments = async () => {
+      try {
+        const response = await axios.get(`http://localhost:3000/appointment/${userId}`);
+        setAppointments(response.data);
+      } catch (error) {
+        console.error("Error fetching appointments:", error);
+        toast.error("Failed to load appointments.");
+      }
+    };
+    fetchAppointments();
+  }, []);
+
+  const handleConfirmCancel = () => {
+    if (!selectedId) return;
+    try {
+      axios.delete(`http://localhost:3000/appointment/${selectedId}`)
+        .then(() => {
+          setAppointments(appointments.filter(appt => appt.id !== selectedId));
+          toast.success("Appointment cancelled successfully!");
+        })
+        .catch(error => {
+          console.error("Error cancelling appointment:", error);
+          toast.error("Failed to cancel appointment.");
+        });
+    } catch (error) {
+      console.error("Error in handleConfirmCancel:", error);
+      toast.error("An error occurred while cancelling the appointment.");
+    }
+  };
   const handleNavigateBack = () => {
     navigate("/services"); // Redirect back to the profile page
   };
 
-  useEffect(() => {
-    // Fetch appointments data from the API or server
-    // e.g., fetch("/api/appointments")
-  }, []);
 
   return (
-    <Box sx={{ display: "flex", justifyContent: "center", mt: 5 }}>
-      <Paper elevation={3} sx={{ p: 4, width: "90%", maxWidth: "800px", borderRadius: 3, backgroundColor: "#f8f9fa" }}>
-        <Typography variant="h4" fontWeight="bold" color="black" align="center" gutterBottom>
-          My Appointments
-        </Typography>
-
-        {/* Display the list of appointments */}
-        <Grid container spacing={2} sx={{ mb: 3 }}>
-          {appointments.length === 0 ? (
-            <Typography>No appointments found</Typography>
-          ) : (
-            appointments.map((appointment) => (
-              <Grid item xs={12} key={appointment.id}>
-                <Paper sx={{ p: 2, mb: 2, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                  <Box>
-                    <Typography variant="h6">{appointment.serviceName}</Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      {new Date(appointment.date).toLocaleString()}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      Status: {appointment.status}
-                    </Typography>
-                  </Box>
-
-                  {/* Show cancel button only for upcoming appointments */}
-                  {appointment.status === "Upcoming" && (
-                    <Button
-                      variant="outlined"
-                      color="error"
-                      onClick={() => handleCancelAppointment(appointment.id)}
-                    >
-                      Cancel
-                    </Button>
-                  )}
-                </Paper>
-              </Grid>
-            ))
-          )}
-        </Grid>
-
-        {/* Navigate to profile page */}
-        <Box sx={{ textAlign: "center", mt: 3 }}>
-          <Button variant="outlined" sx={{ width: "100%", borderRadius: 2 }} onClick={handleNavigateBack}>
-            Back 
+   <div style={{ width: "80%", alignItems: "center", margin: "auto" }}>
+      <Grid container spacing={5} sx={{ padding: 10 }}>
+        {appointments.map(appt => (
+          <Grid item xs={12} sm={6} key={appt.id}>
+            <AppointmentCard appointment={appt} onCancel={handleOpenModal} />
+          </Grid>
+        ))}
+      </Grid>
+      <Dialog open={open} onClose={handleCloseModal}>
+        <DialogTitle>Cancel Appointment</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Are you sure you want to cancel this appointment? This action cannot be undone.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseModal} color="primary">
+            No
           </Button>
-        </Box>
-      </Paper>
-    </Box>
+          <Button onClick={handleConfirmCancel} color="error" variant="contained">
+            Ok
+          </Button>
+        </DialogActions>
+      </Dialog>
+      {/* Navigate to profile page */}
+      <Box sx={{ textAlign: "center", mt: 3 }}>
+        <Button variant="outlined" sx={{ width: "10%", borderRadius: 2 }} onClick={handleNavigateBack}>
+          Back
+        </Button>
+      </Box>
+    </div>
   );
 }

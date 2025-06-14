@@ -13,27 +13,42 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { useParams, useNavigate } from "react-router-dom";
 import { Dayjs } from "dayjs";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 export default function SchedulePage() {
   const { serviceName } = useParams(); // Get selected service from URL
+  const { serviceId } = useParams<{ serviceId: string }>(); // Get serviceId from URL params
   const [selectedDate, setSelectedDate] = useState<Dayjs | null>(null);
   const [selectedTime, setSelectedTime] = useState<Dayjs | null>(null);
   const navigate = useNavigate();
 
-  const handleSubmit = () => {
-    if (!serviceName || !selectedDate || !selectedTime) {
-      alert("⚠️ Please select all fields before scheduling.");
+  const handleSubmit = async () => {
+    if (!selectedDate || !selectedTime) {
+      alert("Please select both date and time.");
       return;
     }
 
-    navigate("/payment", {
-      state: {
-        serviceName,
-        selectedDate: selectedDate.toISOString(), // convert to string
-        selectedTime: selectedTime.toISOString(), // convert to string
-      },
-    });
-  };
+    const appointmentData = {
+      date: selectedDate.format("YYYY-MM-DD"),
+      time: selectedTime.format("HH:mm"),
+      userId: parseInt(JSON.parse(localStorage.getItem("user") || "{}").id),
+      serviceId: parseInt(serviceId || "0"), 
+    };
+
+    try {
+      const response = await axios.post("http://localhost:3000/appointment", appointmentData);
+      console.log("Appointment scheduled:", response.data);
+      // clear the selected date and time
+      setSelectedDate(null);
+      setSelectedTime(null);
+      toast.success("Appointment scheduled successfully!");
+      //navigate("/profile"); // Redirect to profile page after scheduling
+    } catch (error) {
+      console.error("Error scheduling appointment:", error);
+      alert("Failed to schedule appointment. Please try again.");
+    }
+  }; 
 
   const handleProfileClick = () => {
     navigate("/profile");
