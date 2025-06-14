@@ -37,6 +37,7 @@ const Login: React.FC = () => {
 
       // Save token to localStorage
       localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(response.data.user));
 
       // Redirect to dashboard or any secured page
       if (response.data.user.role === "client") {

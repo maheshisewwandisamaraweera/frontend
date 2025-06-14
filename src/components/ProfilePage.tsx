@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Box,
   Paper,
@@ -11,16 +11,38 @@ import {
 import { useNavigate } from "react-router-dom";
 import { uploadImageToCloudinary } from "../Services/uploadImageToCloudinary";
 import toast from "react-hot-toast";
+import axios from "axios";
 
 export default function ProfilePage() {
   const navigate = useNavigate();
-
   const [profileData, setProfileData] = useState({
-    name: "John Doe",
-    email: "johndoe@example.com",
-    contactNumber: "+94 123 456 789",
-    profilePicture: "", // Will store Cloudinary URL here
+    username: "",
+    email: "",
+    contactNumber: "",
+    profilePicture: "",
   });
+  const storedUser = localStorage.getItem("user");
+  let userId = "";
+
+  if (storedUser) {
+    const user = JSON.parse(storedUser);
+    userId = user.id;
+  }
+
+  // get profile data from the backend
+  useEffect(() => {
+    const fetchProfileData = async () => {
+      try {
+        const response = await axios.get(`http://localhost:3000/user/profile/${userId}`);
+        setProfileData(response.data);
+        setImageUrl(response.data.profilePicture || "");
+      } catch (error) {
+        console.error("Error fetching profile data:", error);
+      }
+    };
+
+    fetchProfileData();
+  }, []);
 
   const [imageUrl, setImageUrl] = useState("");
 
@@ -61,10 +83,7 @@ export default function ProfilePage() {
         ...profileData,
         profilePicture: imageUrl,
       };
-
-      // Here you would typically make an API call, for example:
-      // await axios.post("/api/profile", payload);
-
+      await axios.put(`http://localhost:3000/user/profile/${userId}`, payload)
       console.log("Profile payload:", payload);
       toast.success("Profile saved successfully!");
     } catch (err) {
@@ -118,7 +137,8 @@ export default function ProfilePage() {
               variant="outlined"
               fullWidth
               name="name"
-              value={profileData.name}
+              value={profileData.username}
+              disabled={true} // Assuming username is not editable
               onChange={handleInputChange}
               sx={{ backgroundColor: "white", borderRadius: 1 }}
             />

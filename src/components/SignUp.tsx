@@ -79,7 +79,7 @@ const Signup: React.FC = () => {
         console.log("Signup successful:", response.data);
         const token = response.data.token;
         localStorage.setItem("token", token);
-        // Redirect or show success message
+        localStorage.setItem("user", JSON.stringify(response.data.user));
       })
       .catch((error) => {
         console.error("Signup error:", error);
