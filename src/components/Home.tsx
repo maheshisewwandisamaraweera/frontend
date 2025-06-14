@@ -53,7 +53,7 @@ const HomePage: React.FC = () => {
           <Typography variant="h6" paragraph>
             Seamlessly connect with service providers and manage your appointments with ease.
           </Typography>
-          <Button variant="contained" color="secondary" size="large">
+          <Button onClick={handleLoginClick} variant="contained" color="secondary" size="large">
             Get Started
           </Button>
         </Container>

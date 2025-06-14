@@ -11,6 +11,7 @@ import {
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 const Login: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -31,6 +32,7 @@ const Login: React.FC = () => {
         password,
       });
       console.log("Login response:", response);
+      toast.success("Login successful!");
       const token = response.data.token;
 
       // Save token to localStorage

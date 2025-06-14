@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { 
   Card, CardContent, CardHeader, Typography, TextField, 
   MenuItem, Select, FormControl, InputLabel, Grid, 
@@ -6,17 +6,33 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import ProfileIconButton from "./ProfileIconButton"; // Profile Icon Button import
+import axios from "axios";
 
-const servicesData = [
-  { id: 1, name: "Haircut", category: "Salon", price: "LKR 500" },
-  { id: 2, name: "Hair Coloring", category: "Salon", price: "LKR 1500" },
-  { id: 3, name: "Facial Treatment", category: "Spa", price: "LKR 2500" },
-  { id: 4, name: "Full Body Massage", category: "Spa", price: "LKR 7500" },
-  { id: 5, name: "Skin Hydration Therapy", category: "Skin Care", price: "LKR 12000" },
-  { id: 6, name: "Acne Treatment", category: "Skin Care", price: "LKR 10000" }
-];
+// const servicesData = [
+//   { id: 1, name: "Haircut", category: "Salon", price: "LKR 500" },
+//   { id: 2, name: "Hair Coloring", category: "Salon", price: "LKR 1500" },
+//   { id: 3, name: "Facial Treatment", category: "Spa", price: "LKR 2500" },
+//   { id: 4, name: "Full Body Massage", category: "Spa", price: "LKR 7500" },
+//   { id: 5, name: "Skin Hydration Therapy", category: "Skin Care", price: "LKR 12000" },
+//   { id: 6, name: "Acne Treatment", category: "Skin Care", price: "LKR 10000" }
+// ];
 
+// call the backend API to get services data by calling axios
 export default function ServicesPage() {
+  const [servicesData, setServicesData] = useState<any[]>([]);
+  useEffect(() => {
+  const fetchServices = async () => {
+    try {
+      const response = await axios.get("http://localhost:3000/services");
+      setServicesData(response.data);
+    } catch (error) {
+      console.error("Error fetching services data:", error);
+    }
+  };
+
+  fetchServices();
+}, []);
+
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
   const navigate = useNavigate();
@@ -78,7 +94,7 @@ export default function ServicesPage() {
                     />
                     <CardContent sx={{ textAlign: "center" }}>
                       <Typography variant="h6" color="primary">
-                        {service.price}
+                        LKR {service.price}
                       </Typography>
 
                       <Box sx={{ display: "flex", justifyContent: "space-between", mt: 2 }}>
@@ -92,7 +108,7 @@ export default function ServicesPage() {
                             "&:hover": { backgroundColor: "#333" },
                             mr: 1
                           }}
-                          onClick={() => navigate(`/schedule/${service.name}`)}
+                          onClick={() => navigate(`/schedule/${service.name}/${service.id}`)}
                         >
                           Schedule Appointment
                         </Button>
@@ -102,7 +118,7 @@ export default function ServicesPage() {
                             flex: 1,
                             borderRadius: "8px",
                           }}
-                          onClick={() => navigate(`/reviews/${service.name}`)}
+                          onClick={() => navigate(`/reviews/${service.name}/${service.id}`)}
                         >
                           View Reviews
                         </Button>
