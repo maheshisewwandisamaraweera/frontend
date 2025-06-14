@@ -28,6 +28,7 @@ export default function ReviewsPage() {
     const newReview = {
       name,
       comment,
+      serviceId: parseInt(serviceId || "0"),
     };
     console.log("Adding review:", newReview);
 

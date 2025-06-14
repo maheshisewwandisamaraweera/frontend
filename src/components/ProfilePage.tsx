@@ -1,19 +1,30 @@
 import { useState } from "react";
-import { Box, Paper, TextField, Button, Typography, Grid, Avatar } from "@mui/material";
+import {
+  Box,
+  Paper,
+  TextField,
+  Button,
+  Typography,
+  Grid,
+  Avatar,
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { uploadImageToCloudinary } from "../Services/uploadImageToCloudinary";
+import toast from "react-hot-toast";
 
 export default function ProfilePage() {
   const navigate = useNavigate();
 
-  // Example state for user profile (could come from a backend API in a real application)
   const [profileData, setProfileData] = useState({
     name: "John Doe",
     email: "johndoe@example.com",
     contactNumber: "+94 123 456 789",
-    profilePicture: "" // Add state for profile picture
+    profilePicture: "", // Will store Cloudinary URL here
   });
 
-  // Handle input change
+  const [imageUrl, setImageUrl] = useState("");
+
+  // Input handler
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setProfileData((prev) => ({
@@ -22,56 +33,84 @@ export default function ProfilePage() {
     }));
   };
 
-  // Handle file upload for profile picture
-  const handleProfilePictureChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setProfileData((prev) => ({
-          ...prev,
-          profilePicture: reader.result as string,
-        }));
-      };
-      reader.readAsDataURL(file);
+  // Cloudinary upload handler
+  const handleUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const loadingId = toast.loading("Uploading image...");
+    try {
+      const url = await uploadImageToCloudinary(file);
+      setImageUrl(url);
+      setProfileData((prev) => ({
+        ...prev,
+        profilePicture: url,
+      }));
+      toast.success("Image uploaded!");
+    } catch (error) {
+      toast.error("Upload failed");
+    } finally {
+      toast.dismiss(loadingId);
     }
   };
 
-  const handleSaveProfile = () => {
-    // Logic to save profile data (e.g., API call)
-    alert("Profile saved successfully!");
+  // Save profile
+  const handleSaveProfile = async () => {
+    try {
+      const payload = {
+        ...profileData,
+        profilePicture: imageUrl,
+      };
+
+      // Here you would typically make an API call, for example:
+      // await axios.post("/api/profile", payload);
+
+      console.log("Profile payload:", payload);
+      toast.success("Profile saved successfully!");
+    } catch (err) {
+      toast.error("Failed to save profile");
+    }
   };
 
-  // Navigate to appointments page
   const handleNavigateToAppointments = () => {
-    navigate("/appointments");  // Redirect to the appointments page
+    navigate("/appointments");
   };
 
   return (
     <Box sx={{ display: "flex", justifyContent: "center", mt: 5 }}>
-      <Paper elevation={3} sx={{ p: 4, width: "90%", maxWidth: "800px", borderRadius: 3, backgroundColor: "#f8f9fa" }}>
-        <Typography variant="h4" fontWeight="bold" color="black" align="center" gutterBottom>
+      <Paper
+        elevation={3}
+        sx={{
+          p: 4,
+          width: "90%",
+          maxWidth: "800px",
+          borderRadius: 3,
+          backgroundColor: "#f8f9fa",
+        }}
+      >
+        <Typography
+          variant="h4"
+          fontWeight="bold"
+          color="black"
+          align="center"
+          gutterBottom
+        >
           Profile
         </Typography>
 
         {/* Profile Picture */}
         <Box sx={{ textAlign: "center", mb: 3 }}>
           <Avatar
-            src={profileData.profilePicture || "/default-avatar.png"}  // Default avatar if no picture is uploaded
+            src={imageUrl || "/default-avatar.png"}
             sx={{ width: 120, height: 120, margin: "auto", mb: 2 }}
           />
           <Button variant="outlined" component="label">
             Upload Profile Picture
-            <input
-              type="file"
-              accept="image/*"
-              hidden
-              onChange={handleProfilePictureChange}
-            />
+            <input type="file" accept="image/*" onChange={handleUpload} hidden />
           </Button>
         </Box>
 
-        {/* Profile Information Form */}
+        {/* Profile Form */}
         <Grid container spacing={2} sx={{ mb: 3 }}>
           <Grid item xs={12} sm={6}>
             <TextField
@@ -108,6 +147,7 @@ export default function ProfilePage() {
           </Grid>
         </Grid>
 
+        {/* Save & Navigate Buttons */}
         <Box sx={{ textAlign: "center" }}>
           <Button
             variant="contained"
@@ -119,7 +159,6 @@ export default function ProfilePage() {
           </Button>
         </Box>
 
-        {/* Navigate to appointments page */}
         <Box sx={{ textAlign: "center", mt: 3 }}>
           <Button
             variant="outlined"
