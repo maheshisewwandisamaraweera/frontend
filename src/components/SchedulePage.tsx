@@ -15,6 +15,7 @@ import { Dayjs } from "dayjs";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import axios from "axios";
 import toast from "react-hot-toast";
+import ConfirmationPage from "./ConfirmationPage";
 
 export default function SchedulePage() {
   const { serviceName } = useParams(); // Get selected service from URL
@@ -39,11 +40,18 @@ export default function SchedulePage() {
     try {
       const response = await axios.post("http://localhost:3000/appointment", appointmentData);
       console.log("Appointment scheduled:", response.data);
+    //   navigate("/confirmation", {
+    //   state: {
+    //     serviceName,
+    //     selectedDate,
+    //     selectedTime,
+    //   },
+    // }); // Open confirmation dialog
       // clear the selected date and time
       setSelectedDate(null);
       setSelectedTime(null);
       toast.success("Appointment scheduled successfully!");
-      //navigate("/profile"); // Redirect to profile page after scheduling
+      navigate("/appointments"); // Redirect to profile page after scheduling
     } catch (error) {
       console.error("Error scheduling appointment:", error);
       alert("Failed to schedule appointment. Please try again.");
@@ -77,7 +85,6 @@ export default function SchedulePage() {
       >
         <AccountCircleIcon />
       </IconButton>
-
       <Paper elevation={4} sx={{ padding: "32px", maxWidth: "500px", borderRadius: "16px", backgroundColor: "#fff" }}>
         <Typography variant="h4" fontWeight="bold" align="center" gutterBottom>
           Schedule an Appointment for {serviceName}

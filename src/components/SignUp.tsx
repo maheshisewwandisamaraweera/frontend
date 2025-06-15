@@ -78,6 +78,12 @@ const Signup: React.FC = () => {
       .then((response) => {
         console.log("Signup successful:", response.data);
         const token = response.data.token;
+        // if token not exist, redirect to the waiting page
+        if (!token) {
+          console.error("No token received, redirecting to waiting page.");
+          window.location.href = "/waiting"; // Redirect to waiting page
+          return;
+        }
         localStorage.setItem("token", token);
         localStorage.setItem("user", JSON.stringify(response.data.user));
       })
@@ -109,6 +115,7 @@ const Signup: React.FC = () => {
       { name: "businessType", label: "Business Type" },
       { name: "email", label: "Email" },
       { name: "contactNumber", label: "Contact Number" },
+      { name: "username", label: "Username" },
       { name: "password", label: "Password", type: "password" },
       { name: "confirmPassword", label: "Confirm Password", type: "password" },
     ],

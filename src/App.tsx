@@ -63,7 +63,7 @@ const App: React.FC = () => {
           <Route path="/success" element={<SuccessPage />} />
 
           {/* Super Admin */}
-          <Route path="/superadmin-dashboard" element={<Navigate to="/superadmin-dashboard" replace />} />
+          {/* <Route path="/superadmin-dashboard" element={<Navigate to="/superadmin-dashboard" replace />} /> */}
           <Route path="/superadmin-dashboard" element={<SuperAdminDashboard />} />
           <Route path="/add-service-provider" element={<AddServiceProvider />} />
           <Route path="/reject-service-provider" element={<RejectServiceProvider />} />
