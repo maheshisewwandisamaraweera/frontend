@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   TextField,
@@ -9,7 +9,6 @@ import {
   FormControl,
   InputLabel,
   Link,
-  
 } from "@mui/material";
 import { SelectChangeEvent } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
@@ -19,6 +18,22 @@ const Signup: React.FC = () => {
   const [role, setRole] = useState<string>("client");
   const [formValues, setFormValues] = useState<any>({});
   const [errors, setErrors] = useState<any>({});
+  const [businesses, setBusinesses] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (role === "serviceProviderStaff") {
+      axios
+        .get("http://localhost:3000/user/business")
+        .then((res) => {
+          setBusinesses(res.data.map((b: any) => b.businessName));
+        })
+        .catch(() => {
+          setBusinesses([]);
+        });
+    }
+  }, [role]);
+
+  console.log(businesses);
 
   const handleRoleChange = (event: SelectChangeEvent<string>) => {
     setRole(event.target.value);
@@ -28,10 +43,13 @@ const Signup: React.FC = () => {
 
   const validate = () => {
     let newErrors: any = {};
-    
+
     if (!formValues.username) newErrors.username = "Username is required.";
-    
-    if (!formValues.contactNumber || !/^\d{10}$/.test(formValues.contactNumber)) {
+
+    if (
+      !formValues.contactNumber ||
+      !/^\d{10}$/.test(formValues.contactNumber)
+    ) {
       newErrors.contactNumber = "Contact Number must be exactly 10 digits.";
     }
 
@@ -53,15 +71,25 @@ const Signup: React.FC = () => {
       newErrors.confirmPassword = "Passwords do not match.";
     }
 
+    if (role === "serviceProviderStaff" && !formValues.businessName) {
+      newErrors.businessName = "Business Name is required.";
+    }
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormValues({ ...formValues, [e.target.name]: e.target.value });
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | { name?: string; value: unknown }>
+  ) => {
+    const name = e.target.name as string;
+    const value =
+      e.target instanceof HTMLInputElement ? e.target.value : e.target.value;
+    setFormValues({ ...formValues, [name]: value });
   };
 
   const handleSubmit = () => {
+    if (!validate()) return;
     const userData = {
       username: formValues.username,
       address: formValues.address,
@@ -72,24 +100,20 @@ const Signup: React.FC = () => {
       businessType: formValues.businessType,
       role: role,
     };
-    console.log("Submitting form with values:", userData);
-    // send the formValues to the backend or perform further actions
-    axios.post("http://localhost:3000/user/register", userData)
+    axios
+      .post("http://localhost:3000/user/register", userData)
       .then((response) => {
-        console.log("Signup successful:", response.data);
         const token = response.data.token;
-        // if token not exist, redirect to the waiting page
         if (!token) {
-          console.error("No token received, redirecting to waiting page.");
-          window.location.href = "/waiting"; // Redirect to waiting page
+          window.location.href = "/waiting";
           return;
         }
         localStorage.setItem("token", token);
         localStorage.setItem("user", JSON.stringify(response.data.user));
       })
       .catch((error) => {
-        console.error("Signup error:", error);
         // Handle error (e.g., show error message)
+        alert("Signup error: " + (error.response?.data?.message || error.message));
       });
   };
 
@@ -120,7 +144,7 @@ const Signup: React.FC = () => {
       { name: "confirmPassword", label: "Confirm Password", type: "password" },
     ],
     serviceProviderStaff: [
-      { name: "businessName", label: "Business Name" },
+      { name: "businessName", label: "Business Name", type: "dropdown" },
       { name: "username", label: "Username" },
       { name: "email", label: "Email" },
       { name: "contactNumber", label: "Contact Number" },
@@ -130,41 +154,123 @@ const Signup: React.FC = () => {
   };
 
   return (
-    <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center" height="100vh" bgcolor="#f5f5f5" padding={4}>
-      <Box width="100%" maxWidth={600} bgcolor="white" borderRadius={3} boxShadow={4} padding={6}>
-        <Typography variant="h4" fontWeight="bold" textAlign="center" mb={3}>
+    <Box
+      display="flex"
+      flexDirection="column"
+      justifyContent="center"
+      alignItems="center"
+      height="100vh"
+      bgcolor="#f5f5f5"
+      padding={4}
+    >
+      <Box
+        width="100%"
+        maxWidth={600}
+        bgcolor="white"
+        borderRadius={3}
+        boxShadow={4}
+        padding={6}
+      >
+        <Typography
+          variant="h4"
+          fontWeight="bold"
+          textAlign="center"
+          mb={3}
+        >
           Sign Up
         </Typography>
         <FormControl fullWidth margin="normal">
           <InputLabel id="role-select-label">Role</InputLabel>
-          <Select labelId="role-select-label" value={role} onChange={handleRoleChange}>
+          <Select
+            labelId="role-select-label"
+            value={role}
+            onChange={handleRoleChange}
+            label="Role"
+          >
             <MenuItem value="client">Client</MenuItem>
-            <MenuItem value="serviceProviderAdmin">Service Provider Admin</MenuItem>
-            <MenuItem value="serviceProviderStaff">Service Provider Staff</MenuItem>
+            <MenuItem value="serviceProviderAdmin">
+              Service Provider Admin
+            </MenuItem>
+            <MenuItem value="serviceProviderStaff">
+              Service Provider Staff
+            </MenuItem>
           </Select>
         </FormControl>
         {roleFields[role].map((field) => (
           <FormControl key={field.name} fullWidth margin="normal">
-            <TextField
-              label={field.label}
-              name={field.name}
-              type={field.type || "text"}
-              value={formValues[field.name] || ""}
-              onChange={handleChange}
-              error={!!errors[field.name]}
-              helperText={errors[field.name] || ""}
-            />
+            {role === "serviceProviderStaff" && field.name === "businessName" ? (
+              <>
+                <InputLabel id="business-select-label">
+                  {field.label}
+                </InputLabel>
+                <Select
+                  labelId="business-select-label"
+                  name="businessName"
+                  value={formValues.businessName || ""}
+                  onChange={(e) =>
+                    setFormValues({
+                      ...formValues,
+                      businessName: e.target.value,
+                    })
+                  }
+                  error={!!errors.businessName}
+                  label={field.label}
+                >
+                  {businesses.length === 0 ? (
+                    <MenuItem value="" disabled>
+                      No businesses found
+                    </MenuItem>
+                  ) : (
+                    businesses.map((name) => (
+                      <MenuItem key={name} value={name}>
+                        {name}
+                      </MenuItem>
+                    ))
+                  )}
+                </Select>
+                {errors.businessName && (
+                  <Typography variant="caption" color="error">
+                    {errors.businessName}
+                  </Typography>
+                )}
+              </>
+            ) : (
+              <TextField
+                label={field.label}
+                name={field.name}
+                type={field.type || "text"}
+                value={formValues[field.name] || ""}
+                onChange={handleChange}
+                error={!!errors[field.name]}
+                helperText={errors[field.name] || ""}
+              />
+            )}
           </FormControl>
         ))}
         {formValues.password && (
-          <Typography variant="body2" color={passwordStrength() === "Strong" ? "green" : passwordStrength() === "Weak" ? "orange" : "red"} mt={1}>
+          <Typography
+            variant="body2"
+            color={
+              passwordStrength() === "Strong"
+                ? "green"
+                : passwordStrength() === "Weak"
+                ? "orange"
+                : "red"
+            }
+            mt={1}
+          >
             Password Strength: {passwordStrength()}
           </Typography>
         )}
         <Button
           fullWidth
           variant="contained"
-          sx={{ mt: 3, bgcolor: "#000", color: "white", "&:hover": { bgcolor: "#333" } }}
+          sx={{
+            mt: 3,
+            bgcolor: "#000",
+            color: "white",
+            "&:hover": { bgcolor: "#333" },
+          }}
           onClick={handleSubmit}
         >
           Sign Up
@@ -173,7 +279,15 @@ const Signup: React.FC = () => {
           <Typography variant="body1" component="span">
             Already have an account?{" "}
           </Typography>
-          <Link component={RouterLink} to="/login" sx={{ fontWeight: "bold", fontSize: "1rem", textDecoration: "underline" }}>
+          <Link
+            component={RouterLink}
+            to="/login"
+            sx={{
+              fontWeight: "bold",
+              fontSize: "1rem",
+              textDecoration: "underline",
+            }}
+          >
             Login
           </Link>
         </Box>
@@ -181,5 +295,4 @@ const Signup: React.FC = () => {
     </Box>
   );
 };
-
 export default Signup;

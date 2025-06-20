@@ -1,119 +1,114 @@
-import React, { useState } from 'react';
-import { 
-  Box, Button, Typography, List, ListItem, ListItemText, IconButton, 
-  TextField, FormControl, InputLabel, Select, MenuItem, SelectChangeEvent 
+import React, { useEffect, useState } from 'react';
+import {
+  Box, Typography, Table, TableBody, TableCell, TableContainer,
+  TableHead, TableRow, Paper, Button
 } from '@mui/material';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
-
-interface StaffDTO {
-  id: number;
-  name: string;
-  category: string;
-}
+import axios from 'axios';
+import toast from 'react-hot-toast';
 
 const ServiceStaffList: React.FC = () => {
-  const [selectedStaff, setSelectedStaff] = useState<StaffDTO | null>(null);
-  const [staffList, setStaffList] = useState<StaffDTO[]>([
-    { id: 1, name: 'John Doe', category: 'Manager' },
-    { id: 2, name: 'Jane Smith', category: 'Assistant' }
-  ]);
-  const [staffForm, setStaffForm] = useState<StaffDTO>({ id: 0, name: '', category: '' });
+  const user = JSON.parse(localStorage.getItem('user') || '{}');
+  const businessName = user.businessName || '';
 
-  const handleSaveStaff = () => {
-    if (staffForm.id) {
-      setStaffList(staffList.map(s => (s.id === staffForm.id ? staffForm : s)));
-    } else {
-      setStaffList([...staffList, { ...staffForm, id: Date.now() }]);
+  const [staffList, setStaffList] = useState<any[]>([]);
+
+  const fetchStaffList = async () => {
+    try {
+      const response = await axios.get(`http://localhost:3000/user/serviceStaff/${businessName}`);
+      setStaffList(response.data);
+    } catch (error) {
+      console.error('Error fetching staff list:', error);
     }
-    setSelectedStaff(null);
-    setStaffForm({ id: 0, name: '', category: '' });
   };
 
-  const handleEditStaff = (staff: StaffDTO) => {
-    setSelectedStaff(staff);
-    setStaffForm(staff);
+  useEffect(() => {
+    fetchStaffList();
+  }, []);
+
+  // Action handlers (implement API calls as needed)
+  const handleAddToStaff = async (id: string) => {
+    console.log(`Adding staff with id: ${id}`);
+    try {
+    const response = await axios.post(`http://localhost:3000/user/serviceStaff/add/${id}`);
+    console.log(response.data);
+    toast.success(`Staff with id: ${id} added successfully!`);
+    fetchStaffList();
+    }
+    catch (error) {
+      console.error('Error adding staff:', error);
+      toast.error(`Failed to add staff with id: ${id}`);
+    }
   };
 
-  const handleRemoveStaff = (id: number) => {
-    setStaffList(staffList.filter(staff => staff.id !== id));
-  };
-
-  const handleFieldChange = (e: React.ChangeEvent<HTMLInputElement | { name?: string; value: unknown }>) => {
-    const { name, value } = e.target;
-    setStaffForm(prevState => ({ ...prevState, [name as string]: value }));
-  };
-
-  const handleCategoryChange = (e: SelectChangeEvent<string>) => {
-    setStaffForm(prevState => ({ ...prevState, category: e.target.value }));
+  const handleRemove = async (id: string) => {
+    try {
+      console.log(`Removing staff with id: ${id}`);
+      const response = await axios.delete(`http://localhost:3000/user/serviceStaff/remove/${id}`);
+      console.log(response.data);
+      toast.success(`Staff with id: ${id} removed successfully!`);
+      fetchStaffList();
+    } catch (error) {
+      console.error('Error removing staff:', error);
+      toast.error(`Failed to remove staff with id: ${id}`);
+    }
   };
 
   return (
     <Box sx={{ padding: 3, border: '2px solid #ccc', borderRadius: 3, width: '80%', margin: 'auto', boxShadow: 3 }}>
-      {/* Title */}
       <Typography variant="h4" sx={{ marginBottom: 2, textAlign: 'center' }}>
         Add Service Provider Staff
       </Typography>
-
-      {/* Staff Form */}
-      <Box sx={{ marginBottom: 4, padding: 3, border: '1px solid #ddd', borderRadius: 2 }}>
-        <Typography variant="h6" sx={{ marginBottom: 2 }}>
-          {selectedStaff ? 'Edit Staff' : 'Add New Staff'}
-        </Typography>
-        <TextField
-          label="Name"
-          name="name"
-          value={staffForm.name}
-          onChange={handleFieldChange}
-          fullWidth
-          sx={{ marginBottom: 2 }}
-        />
-        <FormControl fullWidth sx={{ marginBottom: 2 }}>
-          <InputLabel>Category</InputLabel>
-          <Select
-            label="Category"
-            name="category"
-            value={staffForm.category}
-            onChange={handleCategoryChange}
-          >
-            <MenuItem value="Salon">Salon</MenuItem>
-            <MenuItem value="Spa">Spa</MenuItem>
-            <MenuItem value="Skin Care Clinics">Skin care clinics</MenuItem>
-          </Select>
-        </FormControl>
-        <Button variant="contained" color="secondary" onClick={handleSaveStaff}>
-          {selectedStaff ? 'Update Staff' : 'Save Staff'}
-        </Button>
-      </Box>
-
-      {/* Staff List */}
-      <Box sx={{ marginTop: 4, padding: 2, border: '1px solid #ddd', borderRadius: 2 }}>
-        <Typography variant="h6">Staff List</Typography>
-        <List>
-          {staffList.map((staff) => (
-            <ListItem
-              key={staff.id}
-              sx={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                borderBottom: '1px solid #ddd',
-                paddingY: 1
-              }}
-            >
-              <ListItemText primary={staff.name} secondary={staff.category} />
-              <Box>
-                <IconButton color="primary" onClick={() => handleEditStaff(staff)} sx={{ marginRight: 1 }}>
-                  <EditIcon />
-                </IconButton>
-                <IconButton color="error" onClick={() => handleRemoveStaff(staff.id)}>
-                  <DeleteIcon />
-                </IconButton>
-              </Box>
-            </ListItem>
-          ))}
-        </List>
-      </Box>
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Username</TableCell>
+              <TableCell>Email</TableCell>
+              <TableCell>Contact Number</TableCell>
+              <TableCell>Status</TableCell>
+              <TableCell align="center">Actions</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {staffList.map((staff) => (
+              <TableRow key={staff.id || staff.email}>
+                <TableCell>{staff.username}</TableCell>
+                <TableCell>{staff.email}</TableCell>
+                <TableCell>{staff.contactNumber}</TableCell>
+                <TableCell>{staff.status}</TableCell>
+                <TableCell align="center">
+                  <Button
+                    variant="contained"
+                    color="success"
+                    size="small"
+                    sx={{ mr: 1 }}
+                    onClick={() => handleAddToStaff(staff.id || staff.email)}
+                    disabled={staff.status === 'active'}
+                  >
+                    Add to Staff
+                  </Button>
+                  <Button
+                    variant="contained"
+                    color="error"
+                    size="small"
+                    onClick={() => handleRemove(staff.id || staff.email)}
+                    disabled={staff.status === 'pending' || staff.status === 'hold'}
+                  >
+                    Remove
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
+            {staffList.length === 0 && (
+              <TableRow>
+                <TableCell colSpan={5} align="center">
+                  No staff requests found.
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </Box>
   );
 };
