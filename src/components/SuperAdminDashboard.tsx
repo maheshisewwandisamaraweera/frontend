@@ -84,6 +84,7 @@ const SuperAdminDashboard: React.FC = () => {
     const fetchUsers = async () => {
       try {
         const response = await axios.get('http://localhost:3000/user/all');
+        console.log('Fetched users:', response.data);
         setUsers(response.data);
       } catch (error) {
         console.error('Error fetching users:', error);

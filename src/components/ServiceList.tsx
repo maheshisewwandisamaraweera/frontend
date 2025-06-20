@@ -1,24 +1,40 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Paper, Typography, Button, List, ListItem, ListItemText, Dialog, DialogTitle, DialogContent, TextField, DialogActions } from "@mui/material";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 interface Service {
+  category: any;
   id: number;
   name: string;
+  serviceType?: string; // Optional field for service type
   price: number;
   duration: string;
 }
 
 const ServiceList: React.FC = () => {
-  const [services, setServices] = useState<Service[]>([
-    { id: 1, name: "Haircut", price: 20, duration: "30 min" },
-    { id: 2, name: "Facial", price: 50, duration: "1 hour" },
-  ]);
+  const [services, setServices] = useState<Service[]>([]);
+  const userId = JSON.parse(localStorage.getItem("user") || "{}").id;
 
   const [open, setOpen] = useState(false);
-  const [newService, setNewService] = useState<Service>({ id: 0, name: "", price: 0, duration: "" });
+  const [newService, setNewService] = useState<Service>({ id: 0, name: "", category: "", price: 0, duration: "" });
+
+  // get the services from the database
+  const fetchServices = async () => {
+    try {
+      const response = await axios.get(`http://localhost:3000/service/user/${userId}`);
+      setServices(response.data);
+    } catch (error) {
+      console.log("Error fetching services:", error);
+    }
+  };
+
+  useEffect(()=>{
+    fetchServices();
+  }, [userId]);
 
   const handleOpen = () => {
-    setNewService({ id: 0, name: "", price: 0, duration: "" });
+    setNewService({ id: 0, name: "",category:"", price: 0, duration: "" });
     setOpen(true);
   };
 
@@ -32,7 +48,25 @@ const ServiceList: React.FC = () => {
 
   const handleAddService = () => {
     if (newService.name && newService.price && newService.duration) {
-      setServices([...services, { ...newService, id: services.length + 1 }]);
+      console.log("Adding service:", newService);
+      const serviceData = {
+        name : newService.name,
+        user: userId,
+        category: newService.serviceType,
+        price : newService.price,
+        duration : newService.duration
+      }
+      console.log(serviceData)
+      // send services data to the backend
+      axios.post(`http://localhost:3000/service`,serviceData)
+      .then((response) => {
+        console.log("Service added:", response.data);
+        setServices([...services, response.data]); // Update state with new review
+        toast.success("Service added successfully!");
+      })
+      .catch((error) => {
+        console.error("Error adding review:", error);
+      });
       handleClose();
     }
   };
@@ -46,7 +80,7 @@ const ServiceList: React.FC = () => {
         <List>
           {services.map((service) => (
             <ListItem key={service.id} divider>
-              <ListItemText primary={service.name} secondary={`Price: $${service.price} | Duration: ${service.duration}`} />
+              <ListItemText primary={`${service.name} | ${service.category}`} secondary={`Price: $${service.price} | Duration: ${service.duration}`} />
             </ListItem>
           ))}
         </List>
@@ -60,6 +94,7 @@ const ServiceList: React.FC = () => {
         <DialogTitle>Add New Service</DialogTitle>
         <DialogContent>
           <TextField fullWidth margin="dense" label="Service Name" name="name" value={newService.name} onChange={handleChange} />
+          <TextField fullWidth margin="dense" label="Service Type" name="serviceType" value={newService.serviceType} onChange={handleChange} />
           <TextField fullWidth margin="dense" label="Price ($)" name="price" type="number" value={newService.price} onChange={handleChange} />
           <TextField fullWidth margin="dense" label="Duration" name="duration" value={newService.duration} onChange={handleChange} />
         </DialogContent>
