@@ -23,7 +23,7 @@ export default function ServicesPage() {
   useEffect(() => {
   const fetchServices = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/services");
+      const response = await axios.get("http://localhost:3000/service");
       setServicesData(response.data);
     } catch (error) {
       console.error("Error fetching services data:", error);

@@ -11,8 +11,11 @@ import {
   ListItem,
   ListItemText,
 } from "@mui/material";
+import axios from "axios";
+import { useEffect } from "react";
 
 interface Staff {
+  username: string;
   id: number;
   name: string;
 }
@@ -23,22 +26,72 @@ interface Service {
 }
 
 const AssignServicesToStaff: React.FC = () => {
-  const [staffList] = useState<Staff[]>([
-    { id: 1, name: "John Doe" },
-    { id: 2, name: "Jane Smith" },
-  ]);
-  const [serviceList] = useState<Service[]>([
-    { id: 1, name: "Haircut" },
-    { id: 2, name: "Facial" },
-  ]);
+  const userId = JSON.parse(localStorage.getItem("user") || "{}").id;
+  const businessName = JSON.parse(localStorage.getItem("user") || "{}").businessName;
+  // const [staffList] = useState<Staff[]>([
+  //   { id: 1, name: "John Doe" },
+  //   { id: 2, name: "Jane Smith" },
+  // ]);
+  // const [serviceList] = useState<Service[]>([
+  //   { id: 1, name: "Haircut" },
+  //   { id: 2, name: "Facial" },
+  // ]);
   const [selectedStaffId, setSelectedStaffId] = useState<number | "">("");
   const [selectedServiceId, setSelectedServiceId] = useState<number | "">("");
   const [assignments, setAssignments] = useState<{ staffId: number; services: Service[] }[]>([]);
+  const [serviceList, setServiceList] = useState<Service[]>([]);
+  const [staffList, setStaffList] = useState<Staff[]>([]);
+
+  // get all the services created  by the user
+  const fetchServices = async () => {
+    try{
+      const response = await axios.get(`http://localhost:3000/service/user/${userId}`); 
+      const services = response.data;  
+      console.log(response.data)   
+      setServiceList(services); 
+    } catch (error) {
+      console.error("Error fetching services:", error);
+      setServiceList([]);
+    }
+  
+    }
+
+  // get all the staff created by the user
+  const fetchStaff = async () => {
+    try {
+      const response = await axios.get(`http://localhost:3000/user/serviceStaff/${businessName}`);
+      const staff = response.data;
+      console.log(response.data);
+      setStaffList(staff);
+    } catch (error) {
+      console.error("Error fetching staff:", error);
+      setStaffList([]);
+    }
+  }
+
+  useEffect(() => {
+    fetchServices();
+    fetchStaff();
+  }, [userId]);  
 
   const handleAssign = () => {
     if (selectedStaffId === "" || selectedServiceId === "") return;
     const service = serviceList.find((s) => s.id === selectedServiceId);
     if (!service) return;
+
+    // update the assignee id in service table
+    try {
+      console.log("Updating service assignee:", service.id, selectedStaffId);
+      axios.put(`http://localhost:3000/service/${service.id}`, {
+        assigneeId: selectedStaffId,
+      });
+    } catch (error) {
+      console.error("Error updating service assignee:", error);
+      return;
+    }
+    // clear the input fields
+    setSelectedStaffId("");
+    setSelectedServiceId("");
 
     setAssignments((prev) => {
       const staffAssignment = prev.find((a) => a.staffId === selectedStaffId);
@@ -89,7 +142,7 @@ const AssignServicesToStaff: React.FC = () => {
           >
             {staffList.map((staff) => (
               <MenuItem key={staff.id} value={staff.id}>
-                {staff.name}
+                {staff.username}
               </MenuItem>
             ))}
           </Select>
