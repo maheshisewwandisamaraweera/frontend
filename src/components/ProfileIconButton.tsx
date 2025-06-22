@@ -9,13 +9,8 @@ const ProfileIconButton = () => {
   return (
     <IconButton
       color="inherit"
-      sx={{
-        position: "fixed",
-        top: 20,  // Adjust position as needed
-        right: 20,  // Place it in the top-right corner
-        zIndex: 1000,  // Ensure it stays on top of other elements
-      }}
       onClick={() => navigate("/profile")}
+      sx={{ ml: 2 }} // margin-left for spacing if needed
     >
       <AccountCircle sx={{ fontSize: 30 }} />
     </IconButton>

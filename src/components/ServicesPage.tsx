@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
-import { 
-  Card, CardContent, CardHeader, Typography, TextField, 
-  MenuItem, Select, FormControl, InputLabel, Grid, 
-  Box, Paper, Button 
+import {
+  Card, CardContent, CardHeader, Typography, TextField,
+  MenuItem, Select, FormControl, InputLabel, Grid,
+  Box, Paper, Button
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import ProfileIconButton from "./ProfileIconButton"; // Profile Icon Button import
-import axios from "axios";
+import axios from "axios";// Import the Header component
+import Footer from "./Footer"; // Import the Footer component 
+import Header from "./Header"; // Import the Header component
 
 // const servicesData = [
 //   { id: 1, name: "Haircut", category: "Salon", price: "LKR 500" },
@@ -21,17 +23,20 @@ import axios from "axios";
 export default function ServicesPage() {
   const [servicesData, setServicesData] = useState<any[]>([]);
   useEffect(() => {
-  const fetchServices = async () => {
-    try {
-      const response = await axios.get("http://localhost:3000/service");
-      setServicesData(response.data);
-    } catch (error) {
-      console.error("Error fetching services data:", error);
-    }
-  };
+    const fetchServices = async () => {
+      try {
+        const response = await axios.get("http://localhost:3000/service");
+        setServicesData(response.data);
+        console.log("Services data fetched:", response.data);
+      } catch (error) {
+        console.error("Error fetching services data:", error);
+      }
+    };
 
-  fetchServices();
-}, []);
+    fetchServices();
+  }, []);
+
+  // console.log("Services Data:", servicesData[0].user.businessName);
 
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
@@ -43,9 +48,12 @@ export default function ServicesPage() {
   );
 
   return (
+    <Box sx={{ backgroundColor: "#f0f0f0", minHeight: "100vh" }}>
+      <Header />
+      {/* Main content area */}
     <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh", position: "relative" }}>
       {/* Profile Icon Button */}
-      <ProfileIconButton />
+      {/* <ProfileIconButton /> */}
 
       <Box sx={{ display: "flex", justifyContent: "center", mt: 5 }}>
         <Paper elevation={3} sx={{ p: 4, width: "90%", maxWidth: "800px", borderRadius: 3, backgroundColor: "#f8f9fa" }}>
@@ -88,9 +96,56 @@ export default function ServicesPage() {
                 <Grid item xs={12} sm={6} key={service.id}>
                   <Card sx={{ borderRadius: 3, boxShadow: 3, "&:hover": { boxShadow: 6 } }}>
                     <CardHeader
-                      title={service.name}
-                      subheader={`Category: ${service.category}`}
-                      sx={{ backgroundColor: "#1976d2", color: "white", borderRadius: "12px 12px 0 0" }}
+                      sx={{
+                        backgroundColor: "#1976d2",
+                        color: "white",
+                        borderRadius: "12px 12px 0 0",
+                        px: 2,
+                        py: 1.5,
+                      }}
+                      title={
+                        <Box display="flex" justifyContent="space-between" alignItems="center">
+                          {/* Left side: Service name and category */}
+                          <Box>
+                            <Typography variant="h6" color="white" fontWeight="bold">
+                              {service.name}
+                            </Typography>
+                            <Typography variant="body2" color="white">
+                              Category: {service.category}
+                            </Typography>
+                          </Box>
+                          {/* Right side: Business logo and name */}
+                          <Box display="flex" flexDirection="column" alignItems="center" gap={0.5}>
+                            {service.user?.profilePicture ? (
+                              <img
+                                src={service.user.profilePicture}
+                                alt={service.user.businessName}
+                                style={{ width: 40, height: 40, borderRadius: "50%", background: "#fff" }}
+                              />
+                            ) : (
+                              <Box
+                                sx={{
+                                  width: 40,
+                                  height: 40,
+                                  borderRadius: "50%",
+                                  backgroundColor: "#fff",
+                                  display: "flex",
+                                  alignItems: "center",
+                                  justifyContent: "center",
+                                  color: "#1976d2",
+                                  fontWeight: "bold",
+                                  fontSize: 18,
+                                }}
+                              >
+                                {service.user?.businessName ? service.user.businessName[0] : "B"}
+                              </Box>
+                            )}
+                            <Typography variant="body2" color="white" fontWeight="bold" sx={{ mt: 0.5, textAlign: "center" }}>
+                              {service.user?.businessName || "Business"}
+                            </Typography>
+                          </Box>
+                        </Box>
+                      }
                     />
                     <CardContent sx={{ textAlign: "center" }}>
                       <Typography variant="h6" color="primary">
@@ -101,7 +156,7 @@ export default function ServicesPage() {
                         <Button
                           variant="contained"
                           sx={{
-                            flex: 1, 
+                            flex: 1,
                             borderRadius: "8px",
                             backgroundColor: "black",
                             color: "white",
@@ -135,6 +190,8 @@ export default function ServicesPage() {
           </Grid>
         </Paper>
       </Box>
+    <Footer/>
+    </Box>
     </Box>
   );
 }
