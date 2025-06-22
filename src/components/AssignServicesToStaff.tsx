@@ -13,6 +13,7 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import { useEffect } from "react";
+import axiosInstance from "../utils/axiosInstance";
 
 interface Staff {
   username: string;
@@ -45,7 +46,7 @@ const AssignServicesToStaff: React.FC = () => {
   // get all the services created  by the user
   const fetchServices = async () => {
     try{
-      const response = await axios.get(`http://localhost:3000/service/user/${userId}`); 
+      const response = await axiosInstance.get(`http://localhost:3000/service/user/${userId}`); 
       const services = response.data;  
       console.log(response.data)   
       setServiceList(services); 
@@ -59,7 +60,7 @@ const AssignServicesToStaff: React.FC = () => {
   // get all the staff created by the user
   const fetchStaff = async () => {
     try {
-      const response = await axios.get(`http://localhost:3000/user/serviceStaff/${businessName}`);
+      const response = await axiosInstance.get(`http://localhost:3000/user/serviceStaff/${businessName}`);
       const staff = response.data;
       console.log(response.data);
       setStaffList(staff);
@@ -82,7 +83,7 @@ const AssignServicesToStaff: React.FC = () => {
     // update the assignee id in service table
     try {
       console.log("Updating service assignee:", service.id, selectedStaffId);
-      axios.put(`http://localhost:3000/service/${service.id}`, {
+      axiosInstance.put(`http://localhost:3000/service/${service.id}`, {
         assigneeId: selectedStaffId,
       });
     } catch (error) {

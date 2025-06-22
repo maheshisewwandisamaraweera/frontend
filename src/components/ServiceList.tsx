@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import { Box, Paper, Typography, Button, List, ListItem, ListItemText, Dialog, DialogTitle, DialogContent, TextField, DialogActions } from "@mui/material";
 import axios from "axios";
 import toast from "react-hot-toast";
+import axiosInstance from "../utils/axiosInstance";
+import Header from "./Header";
+import Footer from "./Footer";
 
 interface Service {
   category: any;
@@ -22,7 +25,7 @@ const ServiceList: React.FC = () => {
   // get the services from the database
   const fetchServices = async () => {
     try {
-      const response = await axios.get(`http://localhost:3000/service/user/${userId}`);
+      const response = await axiosInstance.get(`http://localhost:3000/service/user/${userId}`);
       setServices(response.data);
     } catch (error) {
       console.log("Error fetching services:", error);
@@ -58,7 +61,7 @@ const ServiceList: React.FC = () => {
       }
       console.log(serviceData)
       // send services data to the backend
-      axios.post(`http://localhost:3000/service`,serviceData)
+      axiosInstance.post(`http://localhost:3000/service`,serviceData)
       .then((response) => {
         console.log("Service added:", response.data);
         setServices([...services, response.data]); // Update state with new review
@@ -72,7 +75,9 @@ const ServiceList: React.FC = () => {
   };
 
   return (
-    <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh">
+    <>
+    <Header/>
+    <Box display="flex" justifyContent="center"  minHeight="80vh" sx={{ backgroundColor: "#f0f0f0", padding: 2 }}>
       <Paper elevation={3} sx={{ padding: 4, width: "100%", maxWidth: 600 }}>
         <Typography variant="h5" align="center" gutterBottom>
           Service List
@@ -106,6 +111,8 @@ const ServiceList: React.FC = () => {
         </DialogActions>
       </Dialog>
     </Box>
+    <Footer />
+    </>
   );
 };
 

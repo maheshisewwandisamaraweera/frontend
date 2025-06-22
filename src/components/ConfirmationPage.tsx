@@ -29,7 +29,7 @@ export default function ConfirmationPage() {
         }}
       >
         <Typography variant="h4" fontWeight="bold" align="center" gutterBottom>
-          🎉 Appointment Confirmed!
+          🎉 Appointment Created!
         </Typography>
 
         <Typography variant="h6" align="center" color="text.secondary" sx={{ mb: 3 }}>
@@ -38,10 +38,16 @@ export default function ConfirmationPage() {
 
         <Box sx={{ textAlign: "center", mb: 4 }}>
           <Typography variant="body1" fontSize="18px">
-            📅 <strong>Date:</strong> {selectedDate?.format("YYYY-MM-DD")}
+            📅 <strong>Date:</strong>{" "}
+            {selectedDate && typeof selectedDate.format === "function"
+              ? selectedDate.format("YYYY-MM-DD")
+              : selectedDate || "N/A"}
           </Typography>
           <Typography variant="body1" fontSize="18px">
-            ⏰ <strong>Time:</strong> {selectedTime?.format("HH:mm")}
+            ⏰ <strong>Time:</strong>{" "}
+            {selectedTime && typeof selectedTime.format === "function"
+              ? selectedTime.format("HH:mm")
+              : selectedTime || "N/A"}
           </Typography>
         </Box>
 
@@ -54,9 +60,9 @@ export default function ConfirmationPage() {
             fontSize: "16px",
             borderRadius: "12px",
           }}
-          onClick={() => navigate("/")}
+          onClick={() => navigate("/appointments")}
         >
-          🔙 Back to Services
+          🔙 Back to Appointments
         </Button>
       </Paper>
     </Box>

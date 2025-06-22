@@ -16,6 +16,9 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import axios from "axios";
 import toast from "react-hot-toast";
 import ConfirmationPage from "./ConfirmationPage";
+import axiosInstance from "../utils/axiosInstance";
+import Header from "./Header";
+import Footer from "./Footer";
 
 export default function SchedulePage() {
   const { serviceName } = useParams(); // Get selected service from URL
@@ -38,7 +41,7 @@ export default function SchedulePage() {
     };
 
     try {
-      const response = await axios.post("http://localhost:3000/appointment", appointmentData);
+      const response = await axiosInstance.post("http://localhost:3000/appointment", appointmentData);
       console.log("Appointment scheduled:", response.data);
     //   navigate("/confirmation", {
     //   state: {
@@ -51,7 +54,14 @@ export default function SchedulePage() {
       setSelectedDate(null);
       setSelectedTime(null);
       toast.success("Appointment scheduled successfully!");
-      navigate("/appointments"); // Redirect to profile page after scheduling
+      // pass the date and time to the confirmation page
+      navigate("/confirmation", {
+        state: {
+          serviceName,
+          selectedDate: selectedDate.format("YYYY-MM-DD"),
+          selectedTime: selectedTime.format("HH:mm"),
+        },
+      });
     } catch (error) {
       console.error("Error scheduling appointment:", error);
       alert("Failed to schedule appointment. Please try again.");
@@ -63,29 +73,19 @@ export default function SchedulePage() {
   };
 
   return (
+    <>
+    <Header/>
     <Box sx={{
       display: "flex",
       justifyContent: "center",
-      alignItems: "center",
-      minHeight: "100vh",
+      alignItems: "flex-start", 
+      minHeight: "calc(100vh - 80px)", 
       backgroundColor: "#f4f4f4",
-      padding: "20px"
+      paddingTop: "80px", 
+      paddingBottom: "24px",
+      paddingX: "20px"
     }}>
-      <IconButton
-        sx={{
-          position: "fixed",
-          top: "20px",
-          right: "20px",
-          zIndex: 1000,
-          backgroundColor: "#1976d2",
-          color: "white",
-          "&:hover": { backgroundColor: "#1565c0" },
-        }}
-        onClick={handleProfileClick}
-      >
-        <AccountCircleIcon />
-      </IconButton>
-      <Paper elevation={4} sx={{ padding: "32px", maxWidth: "500px", borderRadius: "16px", backgroundColor: "#fff" }}>
+      <Paper elevation={1} sx={{ padding: "32px", maxWidth: "500px", borderRadius: "16px", backgroundColor: "#fff" }}>
         <Typography variant="h4" fontWeight="bold" align="center" gutterBottom>
           Schedule an Appointment for {serviceName}
         </Typography>
@@ -110,5 +110,7 @@ export default function SchedulePage() {
         </Button>
       </Paper>
     </Box>
+    <Footer/>
+    </>
   );
 }

@@ -25,6 +25,7 @@ import axios from 'axios';
 import { Menu, MenuItem, IconButton, Chip } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import toast from 'react-hot-toast';
+import axiosInstance from '../utils/axiosInstance';
 
 interface ServiceProviderStats {
   active: number;
@@ -188,6 +189,7 @@ const SuperAdminDashboard: React.FC = () => {
                       <TableCell>ID</TableCell>
                       <TableCell>Email</TableCell>
                       <TableCell>Username</TableCell>
+                      <TableCell>Role</TableCell>
                       <TableCell>Address</TableCell>
                       <TableCell>Contact Number</TableCell>
                       <TableCell>Created At</TableCell>
@@ -201,6 +203,7 @@ const SuperAdminDashboard: React.FC = () => {
                         <TableCell>{user.id}</TableCell>
                         <TableCell>{user.email}</TableCell>
                         <TableCell>{user.username}</TableCell>
+                        <TableCell>{user.role}</TableCell>
                         <TableCell>{user.address}</TableCell>
                         <TableCell>{user.contactNumber}</TableCell>
                         <TableCell>{new Date(user.createdAt).toLocaleString()}</TableCell>

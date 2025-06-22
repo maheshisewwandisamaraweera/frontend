@@ -14,11 +14,8 @@ return (
         backgroundColor: '#333',
         color: 'white',
         py: 3,
-        position: 'fixed',
-        left: 0,
-        bottom: 0,
-        width: '100%',
-        zIndex: 1300, // above most content
+        width: '100%',// Added margin-top for spacing
+        // Removed position: 'fixed', left, bottom, zIndex
       }}
     >
       <Container maxWidth="lg">

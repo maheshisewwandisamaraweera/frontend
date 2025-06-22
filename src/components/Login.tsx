@@ -47,10 +47,10 @@ const Login: React.FC = () => {
         navigate("/superadmin-dashboard");
       }
       else if (response.data.user.role === "serviceProviderAdmin") {
-        navigate("/service-provider-admin-profile");
+        navigate("/appointment-schedule");
       }
       else if (response.data.user.role === "serviceProviderStaff") {
-        navigate("/service-provider-account");
+        navigate("/appointment-schedule");
       }
     } catch (err: any) {
       console.log("Login error:", err);

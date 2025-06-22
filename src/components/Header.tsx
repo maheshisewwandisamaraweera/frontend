@@ -11,6 +11,7 @@ import { Menu, MenuItem, IconButton, Avatar } from "@mui/material";
 import { useState } from "react";
 
 
+
 const Header: React.FC = () => {
     const navigate = useNavigate();
     const user = JSON.parse(localStorage.getItem("user") || "{}");
@@ -36,6 +37,11 @@ const Header: React.FC = () => {
         navigate("/login");
     };
 
+    // Determine if user is client
+    const isClient = user && user.role === "client";
+    // Determine if user is service provider
+    const isServiceProvider = user && user.role === "serviceProviderAdmin";
+
     return (
         <Box sx={{ flexGrow: 1 }}>
             <AppBar position="static" sx={{ backgroundColor: "#333" }}>
@@ -44,15 +50,32 @@ const Header: React.FC = () => {
                     <Box sx={{ display: "flex", alignItems: "center", flex: 1 }}>
                         <img src={logo} alt="Logo" style={{ height: "50px", marginRight: "20px" }} />
                     </Box>
-                    {/* Center: Nav Items */}
-                    <Box sx={{ flex: 2, display: "flex", justifyContent: "center", gap: 4 }}>
-                        <Button color="inherit" onClick={() => navigate("/services")}>
-                            Services
-                        </Button>
-                        <Button color="inherit" onClick={() => navigate("/appointments")}>
-                            Appointments
-                        </Button>
-                    </Box>
+                    {/* Center: Nav Items (only for client) */}
+                    {isClient && (
+                        <Box sx={{ flex: 2, display: "flex", justifyContent: "center", gap: 4 }}>
+                            <Button color="inherit" onClick={() => navigate("/services")}>
+                                Services
+                            </Button>
+                            <Button color="inherit" onClick={() => navigate("/appointments")}>
+                                Appointments
+                            </Button>
+                        </Box>
+                    )}
+                    {
+                        isServiceProvider && (
+                            <Box sx={{ flex: 2, display: "flex", justifyContent: "center", gap: 4 }}>
+                                <Button color="inherit" onClick={() => navigate("/appointment-schedule")}>
+                                    Appointments
+                                </Button>
+                                <Button color="inherit" onClick={() => navigate("/service-staff-list")}>
+                                    Staff
+                                </Button>
+                                <Button color="inherit" onClick={() => navigate("/service-list")}>
+                                    Services
+                                </Button>
+                            </Box>
+                        )
+                    }
                     {/* Right: Profile */}
                     <Box sx={{ flex: 1, display: "flex", justifyContent: "flex-end" }}>
                         {user && user.id ? (
@@ -77,9 +100,8 @@ const Header: React.FC = () => {
                     </Box>
                 </Toolbar>
             </AppBar>
-            <Footer />
+            {/* <Footer/> */}
         </Box>
     );
 };
-
 export default Header;

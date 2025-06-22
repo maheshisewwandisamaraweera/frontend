@@ -13,12 +13,15 @@ import {
 import { SelectChangeEvent } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Signup: React.FC = () => {
   const [role, setRole] = useState<string>("client");
   const [formValues, setFormValues] = useState<any>({});
   const [errors, setErrors] = useState<any>({});
   const [businesses, setBusinesses] = useState<string[]>([]);
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     if (role === "serviceProviderStaff") {
@@ -105,7 +108,7 @@ const Signup: React.FC = () => {
       .then((response) => {
         const token = response.data.token;
         if (!token) {
-          window.location.href = "/waiting";
+          navigate("/waiting");
           return;
         }
         localStorage.setItem("token", token);

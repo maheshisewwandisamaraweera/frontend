@@ -5,19 +5,11 @@ import {
   Box, Paper, Button
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import ProfileIconButton from "./ProfileIconButton"; // Profile Icon Button import
-import axios from "axios";// Import the Header component
-import Footer from "./Footer"; // Import the Footer component 
-import Header from "./Header"; // Import the Header component
-
-// const servicesData = [
-//   { id: 1, name: "Haircut", category: "Salon", price: "LKR 500" },
-//   { id: 2, name: "Hair Coloring", category: "Salon", price: "LKR 1500" },
-//   { id: 3, name: "Facial Treatment", category: "Spa", price: "LKR 2500" },
-//   { id: 4, name: "Full Body Massage", category: "Spa", price: "LKR 7500" },
-//   { id: 5, name: "Skin Hydration Therapy", category: "Skin Care", price: "LKR 12000" },
-//   { id: 6, name: "Acne Treatment", category: "Skin Care", price: "LKR 10000" }
-// ];
+import ProfileIconButton from "./ProfileIconButton";
+import axios from "axios";
+import Footer from "./Footer"; 
+import Header from "./Header"; 
+import axiosInstance from "../utils/axiosInstance";
 
 // call the backend API to get services data by calling axios
 export default function ServicesPage() {
@@ -25,7 +17,7 @@ export default function ServicesPage() {
   useEffect(() => {
     const fetchServices = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/service");
+        const response = await axiosInstance.get("http://localhost:3000/service");
         setServicesData(response.data);
         console.log("Services data fetched:", response.data);
       } catch (error) {
@@ -55,7 +47,7 @@ export default function ServicesPage() {
       {/* Profile Icon Button */}
       {/* <ProfileIconButton /> */}
 
-      <Box sx={{ display: "flex", justifyContent: "center", mt: 5 }}>
+      <Box sx={{ display: "flex", justifyContent: "center", mt: 5,mb: 5 }}>
         <Paper elevation={3} sx={{ p: 4, width: "90%", maxWidth: "800px", borderRadius: 3, backgroundColor: "#f8f9fa" }}>
           <Typography variant="h4" fontWeight="bold" color="black" align="center" gutterBottom>
             Available Services

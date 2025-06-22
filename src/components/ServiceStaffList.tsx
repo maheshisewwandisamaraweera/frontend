@@ -5,6 +5,9 @@ import {
 } from '@mui/material';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import axiosInstance from '../utils/axiosInstance';
+import Header from './Header';
+import Footer from './Footer';
 
 const ServiceStaffList: React.FC = () => {
   const user = JSON.parse(localStorage.getItem('user') || '{}');
@@ -14,7 +17,7 @@ const ServiceStaffList: React.FC = () => {
 
   const fetchStaffList = async () => {
     try {
-      const response = await axios.get(`http://localhost:3000/user/serviceStaff/${businessName}`);
+      const response = await axiosInstance.get(`http://localhost:3000/user/serviceStaff/${businessName}`);
       setStaffList(response.data);
     } catch (error) {
       console.error('Error fetching staff list:', error);
@@ -29,7 +32,7 @@ const ServiceStaffList: React.FC = () => {
   const handleAddToStaff = async (id: string) => {
     console.log(`Adding staff with id: ${id}`);
     try {
-    const response = await axios.post(`http://localhost:3000/user/serviceStaff/add/${id}`);
+    const response = await axiosInstance.post(`http://localhost:3000/user/serviceStaff/add/${id}`);
     console.log(response.data);
     toast.success(`Staff with id: ${id} added successfully!`);
     fetchStaffList();
@@ -43,7 +46,7 @@ const ServiceStaffList: React.FC = () => {
   const handleRemove = async (id: string) => {
     try {
       console.log(`Removing staff with id: ${id}`);
-      const response = await axios.delete(`http://localhost:3000/user/serviceStaff/remove/${id}`);
+      const response = await axiosInstance.delete(`http://localhost:3000/user/serviceStaff/remove/${id}`);
       console.log(response.data);
       toast.success(`Staff with id: ${id} removed successfully!`);
       fetchStaffList();
@@ -54,7 +57,9 @@ const ServiceStaffList: React.FC = () => {
   };
 
   return (
-    <Box sx={{ padding: 3, border: '2px solid #ccc', borderRadius: 3, width: '80%', margin: 'auto', boxShadow: 3 }}>
+    <>
+    <Header/>
+    <Box sx={{ padding: 3, border: '2px solid #ccc', borderRadius: 3, width: '80%', margin: 'auto', boxShadow: 3 ,minHeight: '80vh'}}>
       <Typography variant="h4" sx={{ marginBottom: 2, textAlign: 'center' }}>
         Add Service Provider Staff
       </Typography>
@@ -110,6 +115,8 @@ const ServiceStaffList: React.FC = () => {
         </Table>
       </TableContainer>
     </Box>
+    <Footer/>
+    </>
   );
 };
 

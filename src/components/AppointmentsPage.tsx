@@ -5,6 +5,9 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import AppointmentCard from "../components/AppointmentCard"; // Import the AppointmentCard component
 import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from "@mui/material";
+import axiosInstance from "../utils/axiosInstance";
+import Header from "./Header";
+import Footer from "./Footer";
 
 export default function AppointmentsPage() {
   const navigate = useNavigate();
@@ -41,7 +44,7 @@ export default function AppointmentsPage() {
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/appointment/${userId}`);
+        const response = await axiosInstance.get(`http://localhost:3000/appointment/${userId}`);
         setAppointments(response.data);
       } catch (error) {
         console.error("Error fetching appointments:", error);
@@ -54,7 +57,7 @@ export default function AppointmentsPage() {
   const handleConfirmCancel = () => {
     if (!selectedId) return;
     try {
-      axios.delete(`http://localhost:3000/appointment/${selectedId}`)
+      axiosInstance.delete(`http://localhost:3000/appointment/${selectedId}`)
         .then(() => {
           setAppointments(appointments.filter(appt => appt.id !== selectedId));
           toast.success("Appointment cancelled successfully!");
@@ -74,7 +77,9 @@ export default function AppointmentsPage() {
 
 
   return (
-   <div style={{ width: "80%", alignItems: "center", margin: "auto" }}>
+    <>
+    <Header/>
+   <div style={{ width: "80%", alignItems: "center", margin: "auto",marginBottom: "40px" }}>
       <Grid container spacing={5} sx={{ padding: 10 }}>
         {appointments.map(appt => (
           <Grid item xs={12} sm={6} key={appt.id}>
@@ -105,5 +110,7 @@ export default function AppointmentsPage() {
         </Button>
       </Box>
     </div>
+    <Footer />
+    </>
   );
 }

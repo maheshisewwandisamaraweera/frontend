@@ -4,6 +4,9 @@ import { Box, Card, CardContent, Typography, TextField, Button, Paper, List, Lis
 import AccountCircleIcon from "@mui/icons-material/AccountCircle"; // Profile icon import
 import axios from "axios";
 import toast from "react-hot-toast";
+import axiosInstance from "../utils/axiosInstance";
+import Header from "./Header";
+import Footer from "./Footer";
 
 interface Review {
   id: number;
@@ -33,7 +36,7 @@ export default function ReviewsPage() {
     console.log("Adding review:", newReview);
 
     // Post the new review to the backend
-    axios.post(`http://localhost:3000/reviews/${serviceId}`, newReview)
+    axiosInstance.post(`http://localhost:3000/reviews/${serviceId}`, newReview)
       .then((response) => {
         console.log("Review added:", response.data);
         setReviews([...reviews, response.data]); // Update state with new review
@@ -49,7 +52,7 @@ export default function ReviewsPage() {
   // get reviews from the db
   const fetchReviews = async () => {
     try {
-      const response = await axios.get(`http://localhost:3000/reviews/${serviceId}`);
+      const response = await axiosInstance.get(`http://localhost:3000/reviews/${serviceId}`);
       console.log("Fetched reviews:", response.data);
       setReviews(response.data);
     } catch (error) {
@@ -67,9 +70,11 @@ export default function ReviewsPage() {
   };
 
   return (
+    <>
+    <Header/>
     <Box sx={{ display: "flex", justifyContent: "center", mt: 5 }}>
       {/* Profile Button */}
-      <IconButton
+      {/* <IconButton
         sx={{
           position: "fixed",
           top: "20px",
@@ -84,7 +89,7 @@ export default function ReviewsPage() {
         onClick={handleProfileClick}
       >
         <AccountCircleIcon />
-      </IconButton>
+      </IconButton> */}
 
       <Paper elevation={3} sx={{ p: 4, width: "90%", maxWidth: "800px", borderRadius: 3 }}>
         <Typography variant="h4" align="center" gutterBottom>
@@ -138,5 +143,7 @@ export default function ReviewsPage() {
         </Box>
       </Paper>
     </Box>
+    <Footer/>
+    </> 
   );
 }

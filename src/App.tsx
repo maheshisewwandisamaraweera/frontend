@@ -34,6 +34,7 @@ import AssignServicesToStaff from "./components/AssignServicesToStaff";
 import ManagePricingDuration from "./components/ManagePricingDuration";
 import ManagePayments from "./components/ManagePayments";
 import ClientProfileHistory from "./components/ClientProfileHistory";
+import Waiting from "./components/Waiting";
 
 
 const App: React.FC = () => {
@@ -51,6 +52,7 @@ const App: React.FC = () => {
           <Route path="/enter-otp" element={<EnterOTP />} />
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/password-reset-success" element={<PasswordResetSuccess />} />
+          <Route path="/waiting" element={<Waiting />} />
 
           {/* Client */}
           <Route path="/services" element={<ServicesPage />} />
