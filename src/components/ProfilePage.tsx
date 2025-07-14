@@ -13,8 +13,8 @@ import { uploadImageToCloudinary } from "../Services/uploadImageToCloudinary";
 import toast from "react-hot-toast";
 import axios from "axios";
 import axiosInstance from "../utils/axiosInstance";
-import Header from "./Header";
-import Footer from "./Footer";
+///import Header from "./Header";
+//import Footer from "./Footer";
 
 export default function ProfilePage() {
   const navigate = useNavigate();
@@ -102,7 +102,7 @@ export default function ProfilePage() {
 
   return (
     <>
-      <Header />
+      
       <Box sx={{ display: "flex", justifyContent: "center", mt: 5 }}>
         <Paper
           elevation={3}
@@ -214,7 +214,7 @@ export default function ProfilePage() {
           )}
         </Paper>
       </Box>
-      <Footer />
+      
     </>
   );
 }

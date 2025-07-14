@@ -6,6 +6,7 @@ import axiosInstance from "../utils/axiosInstance";
 import Header from "./Header";
 import Footer from "./Footer";
 
+
 interface Service {
   category: any;
   id: number;
@@ -76,7 +77,7 @@ const ServiceList: React.FC = () => {
 
   return (
     <>
-    <Header/>
+    
     <Box display="flex" justifyContent="center"  minHeight="80vh" sx={{ backgroundColor: "#f0f0f0", padding: 2 }}>
       <Paper elevation={3} sx={{ padding: 4, width: "100%", maxWidth: 600 }}>
         <Typography variant="h5" align="center" gutterBottom>
@@ -109,11 +110,15 @@ const ServiceList: React.FC = () => {
             Add
           </Button>
         </DialogActions>
-      </Dialog>
+      </Dialog> 
+    
     </Box>
-    <Footer />
+     
     </>
+     
   );
+   
 };
+  
 
 export default ServiceList;

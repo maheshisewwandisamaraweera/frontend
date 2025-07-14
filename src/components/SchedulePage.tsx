@@ -17,8 +17,8 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import ConfirmationPage from "./ConfirmationPage";
 import axiosInstance from "../utils/axiosInstance";
-import Header from "./Header";
-import Footer from "./Footer";
+//import Header from "./Header";
+//import Footer from "./Footer";
 
 export default function SchedulePage() {
   const { serviceName } = useParams(); // Get selected service from URL
@@ -74,7 +74,7 @@ export default function SchedulePage() {
 
   return (
     <>
-    <Header/>
+    
     <Box sx={{
       display: "flex",
       justifyContent: "center",
@@ -110,7 +110,7 @@ export default function SchedulePage() {
         </Button>
       </Paper>
     </Box>
-    <Footer/>
+    
     </>
   );
 }

@@ -6,8 +6,8 @@ import {
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import axiosInstance from '../utils/axiosInstance';
-import Header from './Header';
-import Footer from './Footer';
+//import Header from './Header';
+//import Footer from './Footer';
 
 const ServiceStaffList: React.FC = () => {
   const user = JSON.parse(localStorage.getItem('user') || '{}');
@@ -58,7 +58,7 @@ const ServiceStaffList: React.FC = () => {
 
   return (
     <>
-    <Header/>
+    
     <Box sx={{ padding: 3, border: '2px solid #ccc', borderRadius: 3, width: '80%', margin: 'auto', boxShadow: 3 ,minHeight: '80vh'}}>
       <Typography variant="h4" sx={{ marginBottom: 2, textAlign: 'center' }}>
         Add Service Provider Staff
@@ -115,7 +115,7 @@ const ServiceStaffList: React.FC = () => {
         </Table>
       </TableContainer>
     </Box>
-    <Footer/>
+    
     </>
   );
 };

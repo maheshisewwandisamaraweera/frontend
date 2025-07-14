@@ -5,8 +5,8 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle"; // Profile ic
 import axios from "axios";
 import toast from "react-hot-toast";
 import axiosInstance from "../utils/axiosInstance";
-import Header from "./Header";
-import Footer from "./Footer";
+//import Header from "./Header";
+//import Footer from "./Footer";
 
 interface Review {
   id: number;
@@ -71,7 +71,7 @@ export default function ReviewsPage() {
 
   return (
     <>
-    <Header/>
+    
     <Box sx={{ display: "flex", justifyContent: "center", mt: 5 }}>
       {/* Profile Button */}
       {/* <IconButton
@@ -143,7 +143,7 @@ export default function ReviewsPage() {
         </Box>
       </Paper>
     </Box>
-    <Footer/>
+    
     </> 
   );
 }

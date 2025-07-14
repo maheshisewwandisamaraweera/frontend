@@ -3,11 +3,11 @@ import { Box, Paper, Typography, Button, Grid, Avatar } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
-import AppointmentCard from "../components/AppointmentCard"; // Import the AppointmentCard component
+import AppointmentCard from "../components/AppointmentCard"; 
 import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from "@mui/material";
 import axiosInstance from "../utils/axiosInstance";
-import Header from "./Header";
-import Footer from "./Footer";
+//import Header from "./Header";
+//import Footer from "./Footer";
 
 export default function AppointmentsPage() {
   const navigate = useNavigate();
@@ -78,7 +78,7 @@ export default function AppointmentsPage() {
 
   return (
     <>
-    <Header/>
+    
    <div style={{ width: "80%", alignItems: "center", margin: "auto",marginBottom: "40px" }}>
       <Grid container spacing={5} sx={{ padding: 10 }}>
         {appointments.map(appt => (
@@ -110,7 +110,7 @@ export default function AppointmentsPage() {
         </Button>
       </Box>
     </div>
-    <Footer />
+    
     </>
   );
 }
