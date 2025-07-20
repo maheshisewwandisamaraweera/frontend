@@ -1,9 +1,13 @@
 import React, { useState } from "react";
 import { Box, TextField, Button, Typography, IconButton, InputAdornment } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material"; // Import eye icons
-import { useNavigate } from "react-router-dom"; // Import useNavigate for redirection
+import { useLocation, useNavigate } from "react-router-dom";// Import useNavigate for redirection
+import axios from "axios";
+import toast from "react-hot-toast";
 
 const ResetPassword: React.FC = () => {
+  const { state } = useLocation();
+    const email = state?.email || "";
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
@@ -13,13 +17,25 @@ const ResetPassword: React.FC = () => {
   const handleClickShowPassword = () => setShowPassword((prev) => !prev); // Toggle password visibility
   const handleClickShowConfirmPassword = () => setShowConfirmPassword((prev) => !prev); // Toggle confirm password visibility
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault(); // Prevent default form submission
     if (newPassword === confirmPassword) {
       console.log("Password reset successful!");
       navigate("/password-reset-success"); // Redirect to the success page
     } else {
       console.log("Passwords do not match.");
+    }
+    try {
+      // Simulate password reset (replace with actual API call)
+    await axios.post("http://localhost:3000/user/reset-password", {
+      email,
+      newPassword,
+    });
+    toast.success("✅ Password reset successfully!");
+    navigate("/login"); 
+    } catch (error) {
+      console.error("❌ Error resetting password:", error);
+      toast.error("⚠️ Failed to reset password. Please try again.");
     }
   };
 

@@ -1,6 +1,8 @@
 import React, { useState, useRef } from "react";
 import { Box, TextField, Button, Typography } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom"; // Import useNavigate
+import axios from "axios";
+import toast from "react-hot-toast";
 
 const EnterOTP: React.FC = () => {
   const { state } = useLocation();
@@ -19,11 +21,23 @@ const EnterOTP: React.FC = () => {
     }
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const enteredOtp = otp.join("");
     console.log(`OTP entered for ${email}:`, enteredOtp);
-    // Redirect to ResetPassword page after successful OTP submission
-    navigate("/reset-password"); // Add your route path for reset password here
+    try {
+      // Simulate OTP verification (replace with actual API call)
+    await axios.post("http://localhost:3000/user/verify-otp", {
+      email,
+      otp: enteredOtp,
+    });
+      toast.success("✅ OTP verified successfully!");
+      console.log("✅ OTP verified successfully! Redirecting to reset password...");
+      // Redirect to reset password page with the email as state
+      navigate("/reset-password", { state: { email } });
+    } catch (error) {
+      console.error("❌ Error verifying OTP:", error);
+      toast.error("⚠️ Invalid OTP. Please try again.");
+    }
   };
 
   return (
@@ -53,7 +67,7 @@ const EnterOTP: React.FC = () => {
         </Box>
 
         <Box display="flex" justifyContent="space-between">
-          <Button variant="contained" sx={{ bgcolor: "lightblue", color: "black", fontSize: "1rem" }}>
+          <Button variant="contained" sx={{ bgcolor: "lightblue", color: "black", fontSize: "1rem" }} onClick={() => navigate("/forgot-password")}>
             Resend OTP
           </Button>
           <Button variant="contained" sx={{ bgcolor: "black", color: "white", fontSize: "1rem" }} onClick={handleSubmit}>

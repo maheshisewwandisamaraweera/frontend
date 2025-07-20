@@ -11,25 +11,20 @@ const ForgotPassword: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const otp = Math.floor(100000 + Math.random() * 900000).toString(); // Generate 6-digit OTP
+    //const otp = Math.floor(100000 + Math.random() * 900000).toString(); // Generate 6-digit OTP
     try {
       // Simulate sending OTP to backend (replace this with actual API call)
-      await axios.post("https://your-backend.com/api/send-otp", {
+      await axios.post("http://localhost:3000/user/send-otp", {
         email,
-        otp,
       });
 
       setMessage(`OTP sent to ${email}`);
       console.log("✅ OTP Sent Successfully! Redirecting...");
+      navigate("/enter-otp", { state: { email } });
     } catch (error) {
       setMessage("⚠️ Failed to send OTP. Try again.");
       console.error("❌ Error sending OTP:", error);
     }
-
-    // Redirect to the Enter OTP page after 2 seconds delay, even if sending OTP fails
-    setTimeout(() => {
-      navigate("/enter-otp", { state: { email } });
-    }, 2000);
   };
 
   return (
