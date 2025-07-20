@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import { CssBaseline } from "@mui/material";
+import { Box, CssBaseline } from "@mui/material";
 import { Toaster } from 'react-hot-toast';
 
 import AppointmentSchedule from "./components/AppointmentList";
@@ -35,6 +35,9 @@ import ManagePricingDuration from "./components/ManagePricingDuration";
 import ManagePayments from "./components/ManagePayments";
 import ClientProfileHistory from "./components/ClientProfileHistory";
 import Waiting from "./components/Waiting";
+import Layout from "./components/Layout";
+
+
 
 
 const App: React.FC = () => {
@@ -42,6 +45,7 @@ const App: React.FC = () => {
     <>
       <Router>
         <CssBaseline />
+         
         <Routes>
 
           {/* Home and Authentication */}
@@ -55,11 +59,11 @@ const App: React.FC = () => {
           <Route path="/waiting" element={<Waiting />} />
 
           {/* Client */}
-          <Route path="/services" element={<ServicesPage />} />
-          <Route path="/schedule/:serviceName/:serviceId" element={<SchedulePage />} />
-          <Route path="/reviews/:serviceName/:serviceId" element={<ReviewsPage />} />
-          <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/appointments" element={<AppointmentsPage />} />
+          <Route path="/services" element={<Layout><ServicesPage /></Layout>} />
+          <Route path="/schedule/:serviceName/:serviceId" element={<Layout><SchedulePage /></Layout>} />
+          <Route path="/reviews/:serviceName/:serviceId" element={<Layout><ReviewsPage /></Layout>} />
+          <Route path="/profile" element={<Layout><ProfilePage /></Layout>} />
+          <Route path="/appointments" element={<Layout><AppointmentsPage /></Layout>} />
           <Route path="/payment" element={<PaymentPage />} />
           <Route path="/confirmation" element={<ConfirmationPage />} />
           <Route path="/success" element={<SuccessPage />} />
@@ -78,8 +82,8 @@ const App: React.FC = () => {
 
           {/* Service Provider Admin */}
           <Route path="/service-provider-admin-profile" element={<ServiceProviderAdminProfile />} />
-          <Route path="/service-list" element={<ServiceList />} />
-          <Route path="/service-staff-list" element={<ServiceStaffList />} />
+          <Route path="/service-list" element={<Layout><ServiceList /></Layout>} />
+          <Route path="/service-staff-list" element={<Layout><ServiceStaffList /></Layout>} />
           <Route path="/manage-resources" element={<ManageResources />} />
           <Route path="/assign-services-to-staff" element={<AssignServicesToStaff />} />
           <Route path="/manage-pricing-duration" element={<ManagePricingDuration />} />

@@ -9,11 +9,16 @@ import {
   FormControl,
   InputLabel,
   Link,
+  InputAdornment,
+  IconButton,
 } from "@mui/material";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { SelectChangeEvent } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-hot-toast";
 
 const Signup: React.FC = () => {
   const [role, setRole] = useState<string>("client");
@@ -21,6 +26,8 @@ const Signup: React.FC = () => {
   const [errors, setErrors] = useState<any>({});
   const [businesses, setBusinesses] = useState<string[]>([]);
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
 
   useEffect(() => {
@@ -104,20 +111,20 @@ const Signup: React.FC = () => {
       role: role,
     };
     axios
-      .post("http://localhost:3000/user/register", userData)
-      .then((response) => {
-        const token = response.data.token;
-        if (!token) {
-          navigate("/waiting");
-          return;
-        }
-        localStorage.setItem("token", token);
-        localStorage.setItem("user", JSON.stringify(response.data.user));
-      })
-      .catch((error) => {
-        // Handle error (e.g., show error message)
-        alert("Signup error: " + (error.response?.data?.message || error.message));
-      });
+  .post("http://localhost:3000/user/register", userData)
+  .then(({ data }) => {
+    // ✅ toast = success
+    toast.success("Signup successful! You can now log in.");
+
+    if (data.token) {
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("user", JSON.stringify(data.user));
+    }
+    setTimeout(() => navigate("/login"), 1200);
+  })
+  .catch((error) => {
+    toast.error(error.response?.data?.message || error.message);
+  });
   };
 
   const passwordStrength = () => {
@@ -155,6 +162,9 @@ const Signup: React.FC = () => {
       { name: "confirmPassword", label: "Confirm Password", type: "password" },
     ],
   };
+
+  const toggleShowPassword = () => setShowPassword((prev) => !prev);
+  const toggleShowConfirmPassword = () => setShowConfirmPassword((prev) => !prev);
 
   return (
     <Box
@@ -241,11 +251,42 @@ const Signup: React.FC = () => {
               <TextField
                 label={field.label}
                 name={field.name}
-                type={field.type || "text"}
+                type={field.type === "password"
+                 ? showPassword 
+                  ? "text"
+                   : "password"
+                  : field.name === "confirmPassword"
+                  ? showConfirmPassword
+                    ? "text"
+                      : "password"
+                  : field.type || "text"
+                }
                 value={formValues[field.name] || ""}
                 onChange={handleChange}
                 error={!!errors[field.name]}
                 helperText={errors[field.name] || ""}
+                InputProps={{
+                  endAdornment:
+                    field.type === "password" ? (
+                      <InputAdornment position="end">
+                        <IconButton
+                          onClick={
+                            field.name === "password"
+                              ? toggleShowPassword
+                              : toggleShowConfirmPassword
+                          }
+                        >
+                          {field.name === "password"
+                            ? showPassword
+                              ? <VisibilityOff />
+                              : <Visibility />
+                            : showConfirmPassword
+                            ? <VisibilityOff />
+                            : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    ) : undefined,
+                }}
               />
             )}
           </FormControl>

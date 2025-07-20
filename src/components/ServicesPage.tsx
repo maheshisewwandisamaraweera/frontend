@@ -7,8 +7,8 @@ import {
 import { useNavigate } from "react-router-dom";
 import ProfileIconButton from "./ProfileIconButton";
 import axios from "axios";
-import Footer from "./Footer"; 
-import Header from "./Header"; 
+//import Footer from "./Footer"; 
+//import Header from "./Header"; 
 import axiosInstance from "../utils/axiosInstance";
 
 // call the backend API to get services data by calling axios
@@ -41,7 +41,7 @@ export default function ServicesPage() {
 
   return (
     <Box sx={{ backgroundColor: "#f0f0f0", minHeight: "100vh" }}>
-      <Header />
+      
       {/* Main content area */}
     <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh", position: "relative" }}>
       {/* Profile Icon Button */}
@@ -182,7 +182,7 @@ export default function ServicesPage() {
           </Grid>
         </Paper>
       </Box>
-    <Footer/>
+    {/* <Footer/> */}
     </Box>
     </Box>
   );
