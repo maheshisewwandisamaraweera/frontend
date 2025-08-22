@@ -1,17 +1,7 @@
-import { useLocation, useNavigate } from "react-router-dom";
-import { Box, Typography, Link } from "@mui/material";
+import { Box, Typography } from "@mui/material";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
 const SuccessPage = () => {
-  const location = useLocation();
-  const navigate = useNavigate();
-  const { serviceName, selectedDate, selectedTime } = location.state || {};
-
-  const handleNavigate = () => {
-    navigate("/confirmation", {
-      state: { serviceName, selectedDate, selectedTime },
-    });
-  };
-
   return (
     <Box
       sx={{
@@ -29,36 +19,19 @@ const SuccessPage = () => {
           padding: "48px",
           borderRadius: "24px",
           boxShadow: "0 8px 24px rgba(0,0,0,0.15)",
-          maxWidth: "650px",
+          maxWidth: "500px",
           width: "100%",
           textAlign: "center",
         }}
       >
+        <CheckCircleIcon sx={{ fontSize: 64, color: "green", mb: 2 }} />
+
         <Typography variant="h4" fontWeight="bold" color="green" gutterBottom>
-          ✅ Payment Successful!
+          Payment Successful!
         </Typography>
 
-        <Typography variant="h6" gutterBottom>
-          Service: <strong>{serviceName}</strong>
-        </Typography>
-        <Typography variant="h6" gutterBottom>
-          Date: <strong>{selectedDate}</strong>
-        </Typography>
-        <Typography variant="h6" gutterBottom>
-          Time: <strong>{selectedTime}</strong>
-        </Typography>
-
-        <Typography variant="body1" color="gray" sx={{ mt: 2 }}>
-          Thank you for your payment.{" "}
-          <Link
-            component="button"
-            onClick={handleNavigate}
-            underline="hover"
-            sx={{ fontWeight: "bold", cursor: "pointer" }}
-          >
-            Click here to confirmed!
-          </Link>{" "}
-          🎉
+        <Typography variant="body1" sx={{ mt: 2, fontSize: "18px" }}>
+          Thank you for your payment 🎉
         </Typography>
       </Box>
     </Box>

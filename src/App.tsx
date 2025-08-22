@@ -64,9 +64,9 @@ const App: React.FC = () => {
           <Route path="/reviews/:serviceName/:serviceId" element={<Layout><ReviewsPage /></Layout>} />
           <Route path="/profile" element={<Layout><ProfilePage /></Layout>} />
           <Route path="/appointments" element={<Layout><AppointmentsPage /></Layout>} />
-          <Route path="/payment" element={<PaymentPage />} />
-          <Route path="/confirmation" element={<ConfirmationPage />} />
-          <Route path="/success" element={<SuccessPage />} />
+          <Route path="/payment" element={<Layout><PaymentPage /></Layout>} />
+          <Route path="/confirmation" element={<ConfirmationPage />} /> 
+          <Route path="/success" element={<Layout><SuccessPage /></Layout>} />
 
           {/* Super Admin */}
           {/* <Route path="/superadmin-dashboard" element={<Navigate to="/superadmin-dashboard" replace />} /> */}
