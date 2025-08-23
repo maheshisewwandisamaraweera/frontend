@@ -203,29 +203,6 @@ const AppointmentSchedule: React.FC = () => {
             </Table>
           </TableContainer>
 
-          {/* Reschedule Modal */}
-          {/* <Dialog open={rescheduleOpen} onClose={() => setRescheduleOpen(false)}>
-            <DialogTitle>Reschedule Appointment</DialogTitle>
-            <DialogContent>
-              <TextField fullWidth type="date" label="New Date" value={rescheduleDate} onChange={(e) => setRescheduleDate(e.target.value)} sx={{ my: 1 }} />
-              <TextField fullWidth type="time" label="New Time" value={rescheduleTime} onChange={(e) => setRescheduleTime(e.target.value)} sx={{ my: 1 }} />
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={() => setRescheduleOpen(false)}>Cancel</Button>
-              <Button
-                onClick={() => {
-                  if (selectedAppointment && rescheduleDate && rescheduleTime) {
-                    updateAppointmentStatus(selectedAppointment.id, "Pending", rescheduleDate, rescheduleTime);
-                    setRescheduleOpen(false);
-                  }
-                }}
-                variant="contained"
-              >
-                Save
-              </Button>
-            </DialogActions>
-          </Dialog> */}
-
           {/* Client History Modal */}
           <Dialog open={historyOpen} onClose={() => setHistoryOpen(false)}>
             <DialogTitle>Client History</DialogTitle>
