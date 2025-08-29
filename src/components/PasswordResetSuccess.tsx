@@ -11,7 +11,11 @@ const PasswordResetSuccess: React.FC = () => {
   };
 
   return (
-    <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center" height="100vh" bgcolor="#f5f5f5" padding={4}>
+    <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center" height="100vh" padding={4} sx={{
+    backgroundImage: `url(/stones)`, // replace with actual image path
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+  }}>
       <Box width="100%" maxWidth={500} bgcolor="white" borderRadius={3} boxShadow={5} padding={6} textAlign="center">
         <Box
           display="flex"

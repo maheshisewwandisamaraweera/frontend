@@ -4,7 +4,6 @@ import {
   Typography,
   Box,
   Paper,
-  IconButton,
 } from "@mui/material";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -12,10 +11,7 @@ import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { useParams, useNavigate } from "react-router-dom";
 import { Dayjs } from "dayjs";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import axios from "axios";
 import toast from "react-hot-toast";
-import ConfirmationPage from "./ConfirmationPage";
 import axiosInstance from "../utils/axiosInstance";
 //import Header from "./Header";
 //import Footer from "./Footer";
@@ -77,13 +73,15 @@ export default function SchedulePage() {
     
     <Box sx={{
       display: "flex",
-      justifyContent: "center",
-      alignItems: "flex-start", 
-      minHeight: "calc(100vh - 80px)", 
-      backgroundColor: "#f4f4f4",
-      paddingTop: "80px", 
-      paddingBottom: "24px",
-      paddingX: "20px"
+    justifyContent: "center",
+    alignItems: "flex-start",
+    minHeight: "calc(100vh - 80px)",
+    paddingTop: "80px",
+    paddingBottom: "24px",
+    paddingX: "20px",
+    backgroundImage: `url(/candle)`,   // ✅ set background image
+    backgroundSize: "cover",
+    backgroundPosition: "center",
     }}>
       <Paper elevation={1} sx={{ padding: "32px", maxWidth: "500px", borderRadius: "16px", backgroundColor: "#fff" }}>
         <Typography variant="h4" fontWeight="bold" align="center" gutterBottom>

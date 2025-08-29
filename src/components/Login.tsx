@@ -12,6 +12,7 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
+import loginBg from "../images/login-bg.jpg";
 
 const Login: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -64,13 +65,17 @@ const Login: React.FC = () => {
 
   return (
     <Box
+    
+      //flexDirection="column"
       display="flex"
-      flexDirection="column"
       justifyContent="center"
       alignItems="center"
       height="100vh"
-      bgcolor="#f5f5f5"
-      padding={4}
+      sx={{
+        backgroundImage: `url(${loginBg})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
     >
       <Box
         width="100%"

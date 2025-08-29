@@ -3,7 +3,6 @@ import {
   Box, Typography, Table, TableBody, TableCell, TableContainer,
   TableHead, TableRow, Paper, Button
 } from '@mui/material';
-import axios from 'axios';
 import toast from 'react-hot-toast';
 import axiosInstance from '../utils/axiosInstance';
 //import Header from './Header';
@@ -59,7 +58,7 @@ const ServiceStaffList: React.FC = () => {
   return (
     <>
     
-    <Box sx={{ padding: 3, border: '2px solid #ccc', borderRadius: 3, width: '80%', margin: 'auto', boxShadow: 3 ,minHeight: '80vh'}}>
+    <Box sx={{ padding: 3, borderRadius: 3, width: '80%', margin: 'auto', boxShadow: 3 ,minHeight: '80vh'}}>
       <Typography variant="h4" sx={{ marginBottom: 2, textAlign: 'center' }}>
         Add Service Provider Staff
       </Typography>

@@ -5,8 +5,6 @@ import {
   Box, Paper, Button
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import ProfileIconButton from "./ProfileIconButton";
-import axios from "axios";
 //import Footer from "./Footer"; 
 //import Header from "./Header"; 
 import axiosInstance from "../utils/axiosInstance";
@@ -40,7 +38,12 @@ export default function ServicesPage() {
   );
 
   return (
-    <Box sx={{ backgroundColor: "#f0f0f0", minHeight: "100vh" }}>
+    <Box sx={{ 
+    minHeight: "100vh",
+    backgroundImage: `url(/images/login-bg.jpg)`,
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+  }}>
       
       {/* Main content area */}
     <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh", position: "relative" }}>

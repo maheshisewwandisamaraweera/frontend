@@ -11,7 +11,6 @@ import {
 import { useNavigate } from "react-router-dom";
 import { uploadImageToCloudinary } from "../Services/uploadImageToCloudinary";
 import toast from "react-hot-toast";
-import axios from "axios";
 import axiosInstance from "../utils/axiosInstance";
 ///import Header from "./Header";
 //import Footer from "./Footer";
@@ -103,7 +102,17 @@ export default function ProfilePage() {
   return (
     <>
       
-      <Box sx={{ display: "flex", justifyContent: "center", mt: 5 }}>
+      <Box sx={{ display: "flex",
+    justifyContent: "center",
+    alignItems: "flex-start",
+    minHeight: "100vh",
+    paddingTop: "80px",
+    paddingBottom: "24px",
+    px: "20px",
+    backgroundImage: `url(/stock)`,  // ✅ background image
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+     }}>
         <Paper
           elevation={3}
           sx={{

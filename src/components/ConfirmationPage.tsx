@@ -1,5 +1,6 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { Box, Typography, Button, Paper } from "@mui/material";
+import success from "../images/success.jpg";
 
 export default function ConfirmationPage() {
   const location = useLocation();
@@ -8,13 +9,15 @@ export default function ConfirmationPage() {
 
   return (
     <Box
+     //flexDirection="column"
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+      height="100vh"
       sx={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        minHeight: "100vh",
-        backgroundColor: "#f0f4f8",
-        padding: "24px",
+        backgroundImage: `url(${success})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
       }}
     >
       <Paper

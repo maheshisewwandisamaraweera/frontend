@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Box, TextField, Button, Typography } from "@mui/material";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import rock from "../images/rock.jpg";
 
 const ForgotPassword: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -29,13 +30,16 @@ const ForgotPassword: React.FC = () => {
 
   return (
     <Box
+      //flexDirection="column"
       display="flex"
-      flexDirection="column"
       justifyContent="center"
       alignItems="center"
       height="100vh"
-      bgcolor="#f5f5f5"
-      padding={4}
+      sx={{
+        backgroundImage: `url(${rock})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
     >
       <Box
         width="100%"

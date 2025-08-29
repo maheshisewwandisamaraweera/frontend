@@ -19,6 +19,7 @@ import { Link as RouterLink } from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
+import SignupBg from "../images/signup-bg.jpg";
 
 const Signup: React.FC = () => {
   const [role, setRole] = useState<string>("client");
@@ -169,12 +170,14 @@ const Signup: React.FC = () => {
   return (
     <Box
       display="flex"
-      flexDirection="column"
       justifyContent="center"
       alignItems="center"
       height="100vh"
-      bgcolor="#f5f5f5"
-      padding={4}
+      sx={{
+        backgroundImage: `url(${SignupBg})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
     >
       <Box
         width="100%"

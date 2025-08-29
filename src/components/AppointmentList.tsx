@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import {
-  Box, Container, Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
+  Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
   Paper, Typography, Chip, Button, Dialog, DialogTitle, DialogContent,
   DialogActions, TextField, Select, MenuItem, InputLabel, FormControl
 } from "@mui/material";
 import axiosInstance from "../utils/axiosInstance";
 import toast from "react-hot-toast";
-import Header from "./Header";
-import Footer from "./Footer";
+import spaHero from "../images/spa-hero.jpg";
+//import Header from "./Header";
+//import Footer from "./Footer";
 
 type Appointment = {
   id: number;
@@ -123,13 +124,18 @@ const AppointmentSchedule: React.FC = () => {
 
   return (
     <>
-      <Header />
+      
       <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        minHeight="100vh"
-        bgcolor="#f5f5f5"
+        //flexDirection="column"
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+      height="100vh"
+      sx={{
+        backgroundImage: `url(${spaHero})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
       >
         <Paper elevation={3} sx={{ padding: 4, maxWidth: 1200, width: "100%" }}>
           <Typography variant="h5" sx={{ mb: 3, textAlign: "center" }}>Appointment Schedule</Typography>
@@ -268,7 +274,7 @@ const AppointmentSchedule: React.FC = () => {
           </Dialog>
         </Paper>
       </Box>
-      <Footer />
+      
     </>
   );
 };

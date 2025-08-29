@@ -1,7 +1,6 @@
-import { useState, useEffect, use } from "react";
-import { Box, Paper, Typography, Button, Grid, Avatar } from "@mui/material";
+import { useState, useEffect } from "react";
+import { Box, Button, Grid } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import toast from "react-hot-toast";
 import AppointmentCard from "../components/AppointmentCard"; 
 import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from "@mui/material";
@@ -77,7 +76,20 @@ export default function AppointmentsPage() {
 
 
   return (
-    <>
+    
+    <Box sx={{
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "flex-start", 
+      minHeight: "calc(100vh - 80px)", 
+      paddingTop: "80px", 
+      paddingBottom: "24px",
+      paddingX: "20px",
+      backgroundImage: `url(/stones)`,   // ✅ set background image
+      backgroundSize: "cover",
+      backgroundPosition: "center",
+    }}
+    >
     
    <div style={{ width: "80%", alignItems: "center", margin: "auto",marginBottom: "40px" }}>
       <Grid container spacing={5} sx={{ padding: 10 }}>
@@ -111,6 +123,6 @@ export default function AppointmentsPage() {
       </Box>
     </div>
     
-    </>
+    </Box>
   );
 }

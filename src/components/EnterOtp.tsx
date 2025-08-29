@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom"; // Import useNaviga
 import axios from "axios";
 import toast from "react-hot-toast";
 
+
 const EnterOTP: React.FC = () => {
   const { state } = useLocation();
   const email = state?.email || ""; // Retrieve email passed from ForgotPassword.tsx
@@ -41,7 +42,11 @@ const EnterOTP: React.FC = () => {
   };
 
   return (
-    <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center" height="100vh" bgcolor="#f5f5f5" padding={4}>
+    <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center" height="100vh" padding={4} sx={{
+    backgroundImage: `url(/success)`, // replace with actual image path
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+  }}>
       <Box width="100%" maxWidth={500} bgcolor="white" borderRadius={3} boxShadow={5} padding={6} textAlign="center">
         <Typography variant="h3" fontWeight="bold" color="black" mb={3}>
           Enter OTP

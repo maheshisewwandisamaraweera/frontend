@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Box, Paper, Typography, Button, List, ListItem, ListItemText, Dialog, DialogTitle, DialogContent, TextField, DialogActions } from "@mui/material";
-import axios from "axios";
 import toast from "react-hot-toast";
 import axiosInstance from "../utils/axiosInstance";
-import Header from "./Header";
-import Footer from "./Footer";
 
 
 interface Service {
@@ -78,7 +75,11 @@ const ServiceList: React.FC = () => {
   return (
     <>
     
-    <Box display="flex" justifyContent="center"  minHeight="80vh" sx={{ backgroundColor: "#f0f0f0", padding: 2 }}>
+   <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center" height="100vh" padding={4} sx={{
+       backgroundImage: `url(/stock)`, // replace with actual image path
+       backgroundSize: "cover",
+       backgroundPosition: "center",
+     }}>
       <Paper elevation={3} sx={{ padding: 4, width: "100%", maxWidth: 600 }}>
         <Typography variant="h5" align="center" gutterBottom>
           Service List

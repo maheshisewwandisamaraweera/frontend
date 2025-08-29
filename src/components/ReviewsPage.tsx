@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Box, Card, CardContent, Typography, TextField, Button, Paper, List, ListItem, IconButton } from "@mui/material";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle"; // Profile icon import
-import axios from "axios";
+import { Box, Card, CardContent, Typography, TextField, Button, Paper, List, ListItem } from "@mui/material";
 import toast from "react-hot-toast";
 import axiosInstance from "../utils/axiosInstance";
 //import Header from "./Header";
@@ -72,7 +70,18 @@ export default function ReviewsPage() {
   return (
     <>
     
-    <Box sx={{ display: "flex", justifyContent: "center", mt: 5 }}>
+    <Box sx={{
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "flex-start",
+    minHeight: "100vh",
+    paddingTop: "80px",
+    paddingBottom: "24px",
+    px: "20px",
+    backgroundImage: `url(/spa-hero)`,  // ✅ background image
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+  }}>
       {/* Profile Button */}
       {/* <IconButton
         sx={{
