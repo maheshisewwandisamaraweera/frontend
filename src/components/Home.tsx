@@ -54,7 +54,7 @@ const HomePage: React.FC = () => {
             Seamlessly connect with service providers and manage your appointments with ease.
           </Typography>
           <Button onClick={handleLoginClick} variant="contained" color="secondary" size="large">
-            Get Started
+            Click Here 
           </Button>
         </Container>
       </Box>
